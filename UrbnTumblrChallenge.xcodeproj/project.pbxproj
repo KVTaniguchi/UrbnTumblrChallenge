@@ -21,6 +21,7 @@
 		C784F43A1961C4C7004045DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C784F41C1961C4C7004045DC /* UIKit.framework */; };
 		C784F4421961C4C7004045DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C784F4401961C4C7004045DC /* InfoPlist.strings */; };
 		C784F4441961C4C7004045DC /* UrbnTumblrChallengeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F4431961C4C7004045DC /* UrbnTumblrChallengeTests.m */; };
+		C784F44F1961C6D1004045DC /* KTDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F44E1961C6D1004045DC /* KTDataLoader.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		C784F43F1961C4C7004045DC /* UrbnTumblrChallengeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UrbnTumblrChallengeTests-Info.plist"; sourceTree = "<group>"; };
 		C784F4411961C4C7004045DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C784F4431961C4C7004045DC /* UrbnTumblrChallengeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UrbnTumblrChallengeTests.m; sourceTree = "<group>"; };
+		C784F44D1961C6D1004045DC /* KTDataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTDataLoader.h; sourceTree = "<group>"; };
+		C784F44E1961C6D1004045DC /* KTDataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTDataLoader.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +122,8 @@
 				C784F42E1961C4C7004045DC /* KTViewController.m */,
 				C784F4301961C4C7004045DC /* Images.xcassets */,
 				C784F41F1961C4C7004045DC /* Supporting Files */,
+				C784F44D1961C6D1004045DC /* KTDataLoader.h */,
+				C784F44E1961C6D1004045DC /* KTDataLoader.m */,
 			);
 			path = UrbnTumblrChallenge;
 			sourceTree = "<group>";
@@ -251,6 +256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C784F42F1961C4C7004045DC /* KTViewController.m in Sources */,
+				C784F44F1961C6D1004045DC /* KTDataLoader.m in Sources */,
 				C784F4251961C4C7004045DC /* main.m in Sources */,
 				C784F4291961C4C7004045DC /* KTAppDelegate.m in Sources */,
 			);

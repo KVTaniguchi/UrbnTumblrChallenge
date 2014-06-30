@@ -1,5 +1,5 @@
 //
-//  KTViewController.m
+//  KTDataLoader.m
 //  UrbnTumblrChallenge
 //
 //  Created by Kevin Taniguchi on 6/30/14.
@@ -18,28 +18,24 @@
 //Use of animations are encouraged
 //All code should be in Github
 
-// 1 type in username into tumblr api to get a response
+#import "KTDataLoader.h"
 
-// 2 build ui
+@interface KTDataLoader ()
 
-#import "KTViewController.h"
-
-@interface KTViewController ()
+@property (nonatomic, strong) NSURLSession *session;
+@property (nonatomic, strong) NSURLSessionConfiguration *config;
 
 @end
 
-@implementation KTViewController
+@implementation KTDataLoader
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+-(void)makeSession{
+    self.config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    self.session = [NSURLSession sessionWithConfiguration:self.config];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)grabSearchFieldRequest:(NSString*)textFieldEntry{
+    
 }
 
 @end
