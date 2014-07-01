@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface KTDataLoader : NSObject
+@protocol KTDataloaderDelegate <NSObject>
+-(void)finishedDownloading;
+@end
 
+@interface KTDataLoader : NSObject <NSURLSessionDownloadDelegate, NSURLSessionTaskDelegate>
+-(void)grabBlogInfoForUser:(NSString*)textFieldEntry;
+-(void)grabBlogAvatarForUser:(NSString*)userName;
+-(void)makeSession;
+@property (nonatomic,weak) id<KTDataloaderDelegate>delegate;
+@property (nonatomic, strong) UIImage *downloadedImage;
+@property (nonatomic,strong) NSString *usernameToLoad;
 @end

@@ -20,8 +20,9 @@
 		C784F4391961C4C7004045DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C784F4181961C4C7004045DC /* Foundation.framework */; };
 		C784F43A1961C4C7004045DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C784F41C1961C4C7004045DC /* UIKit.framework */; };
 		C784F4421961C4C7004045DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C784F4401961C4C7004045DC /* InfoPlist.strings */; };
-		C784F4441961C4C7004045DC /* UrbnTumblrChallengeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F4431961C4C7004045DC /* UrbnTumblrChallengeTests.m */; };
 		C784F44F1961C6D1004045DC /* KTDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F44E1961C6D1004045DC /* KTDataLoader.m */; };
+		C784F4511961D578004045DC /* KTBlogInfoTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F4501961D578004045DC /* KTBlogInfoTest.m */; };
+		C784F4531961D591004045DC /* KTCollectionViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F4521961D591004045DC /* KTCollectionViewTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,9 +54,10 @@
 		C784F4371961C4C7004045DC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C784F43F1961C4C7004045DC /* UrbnTumblrChallengeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UrbnTumblrChallengeTests-Info.plist"; sourceTree = "<group>"; };
 		C784F4411961C4C7004045DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		C784F4431961C4C7004045DC /* UrbnTumblrChallengeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UrbnTumblrChallengeTests.m; sourceTree = "<group>"; };
 		C784F44D1961C6D1004045DC /* KTDataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTDataLoader.h; sourceTree = "<group>"; };
 		C784F44E1961C6D1004045DC /* KTDataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTDataLoader.m; sourceTree = "<group>"; };
+		C784F4501961D578004045DC /* KTBlogInfoTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTBlogInfoTest.m; sourceTree = "<group>"; };
+		C784F4521961D591004045DC /* KTCollectionViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTCollectionViewTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +144,8 @@
 		C784F43D1961C4C7004045DC /* UrbnTumblrChallengeTests */ = {
 			isa = PBXGroup;
 			children = (
-				C784F4431961C4C7004045DC /* UrbnTumblrChallengeTests.m */,
+				C784F4501961D578004045DC /* KTBlogInfoTest.m */,
+				C784F4521961D591004045DC /* KTCollectionViewTests.m */,
 				C784F43E1961C4C7004045DC /* Supporting Files */,
 			);
 			path = UrbnTumblrChallengeTests;
@@ -266,7 +269,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C784F4441961C4C7004045DC /* UrbnTumblrChallengeTests.m in Sources */,
+				C784F4511961D578004045DC /* KTBlogInfoTest.m in Sources */,
+				C784F4531961D591004045DC /* KTCollectionViewTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

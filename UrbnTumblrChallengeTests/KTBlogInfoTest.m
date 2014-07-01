@@ -1,6 +1,6 @@
 //
-//  UrbnTumblrChallengeTests.m
-//  UrbnTumblrChallengeTests
+//  KTBlogInfoTest.m
+//  UrbnTumblrChallenge
 //
 //  Created by Kevin Taniguchi on 6/30/14.
 //  Copyright (c) 2014 Taniguchi. All rights reserved.
@@ -8,11 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
-@interface UrbnTumblrChallengeTests : XCTestCase
+@interface KTBlogInfoTest : XCTestCase
 
 @end
 
-@implementation UrbnTumblrChallengeTests
+@implementation KTBlogInfoTest
 
 - (void)setUp
 {
@@ -26,9 +26,5 @@
     [super tearDown];
 }
 
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
-}
 
 @end

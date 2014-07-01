@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KTDataLoader.h"
 
-@interface KTViewController : UIViewController
-
+@interface KTViewController : UIViewController <KTDataloaderDelegate>
+@property (strong, nonatomic) IBOutlet UIImageView *tumblrAvatar;
+@property (nonatomic,strong) UIImageView *avatarImage;
 @end

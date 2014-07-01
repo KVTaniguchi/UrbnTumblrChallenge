@@ -18,6 +18,8 @@
 //Use of animations are encouraged
 //All code should be in Github
 
+// OAuth Consumer Key:
+
 #import "KTDataLoader.h"
 
 @interface KTDataLoader ()
@@ -32,10 +34,77 @@
 -(void)makeSession{
     self.config = [NSURLSessionConfiguration defaultSessionConfiguration];
     self.session = [NSURLSession sessionWithConfiguration:self.config];
+    self.downloadedImage = [UIImage new];
 }
 
--(void)grabSearchFieldRequest:(NSString*)textFieldEntry{
+-(void)grabBlogInfoForUser:(NSString*)textFieldEntry{
+    NSLog(@"called");
+    // api.tumblr.com/v2/blog/{base-hostname}/info?api_key={key}
+    
+    // http://api.tumblr.com/v2/blog/scipsy.tumblr.com/info
+    // http://api.tumblr.com/v2/blog/good.tumblr.com/info
+    
+    
+    // parse the textfield entry for the user name OR the tumblr url
+    // easiest to just strip the tumblr.com off and feed in the blog name
+    
+    NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/info?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG", textFieldEntry];
+    NSURL *url = [NSURL URLWithString:link];
+    NSURLSessionDataTask *dataTask = [self.session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (data) {
+            NSLog(@"data");
+        }
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSLog(@"**** returned : %@", jsonData);
+    }];
+    [dataTask resume];
+}
+
+-(void)grabBlogAvatarForUser:(NSString*)userName{
+    // http://api.tumblr.com/v2/blog/david.tumblr.com/avatar
+    
+    NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/avatar/info?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG", userName];
+    NSURL *url = [NSURL URLWithString:link];
+    NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        self.downloadedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
+        NSLog(@"%@", self.downloadedImage.description);
+        [[self delegate] finishedDownloading];
+    }];
+    [downloadTask resume];
+}
+
+-(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
     
 }
+
+-(void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session{
+    
+}
+
+-(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes{
+    
+}
+
+-(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
+    
+}
+
+// 1
+//NSURLSessionDownloadTask *getImageTask =
+//[session downloadTaskWithURL:[NSURL URLWithString:imageUrl]
+// 
+//           completionHandler:^(NSURL *location,
+//                               NSURLResponse *response,
+//                               NSError *error) {
+//               // 2
+//               UIImage *downloadedImage =
+//               [UIImage imageWithData:
+//                [NSData dataWithContentsOfURL:location]];
+//               //3
+//               dispatch_async(dispatch_get_main_queue(), ^{
+//                   // do stuff with image
+//                   _imageWithBlock.image = downloadedImage;
+//               });
+//           }];
 
 @end
