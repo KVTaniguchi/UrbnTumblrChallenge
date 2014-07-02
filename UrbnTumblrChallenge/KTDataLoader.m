@@ -40,23 +40,29 @@
 
 -(void)grabBlogInfoForUser:(NSString*)textFieldEntry{
     NSLog(@"called");
-    // api.tumblr.com/v2/blog/{base-hostname}/info?api_key={key}
-    
     // http://api.tumblr.com/v2/blog/scipsy.tumblr.com/info
     // http://api.tumblr.com/v2/blog/good.tumblr.com/info
-    
-    
-    // parse the textfield entry for the user name OR the tumblr url
-    // easiest to just strip the tumblr.com off and feed in the blog name
-    
     NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/info?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG", textFieldEntry];
     NSURL *url = [NSURL URLWithString:link];
     NSURLSessionDataTask *dataTask = [self.session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (data) {
-            NSLog(@"got data");
+        if (response) {
+            NSHTTPURLResponse *status = (NSHTTPURLResponse*)response;
+            if (status.statusCode != 200) {
+                [[self delegate] searchReturnedNoResults];
+            }else if (status.statusCode == 200){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                    NSDictionary *response = [jsonData objectForKey:@"response"];
+                    NSDictionary *blog = [response objectForKey:@"blog"];
+                    self.blogtitle = [blog objectForKey:@"title"];
+                    self.usernameToLoad = [blog objectForKey:@"name"];
+                    NSString *blogDescription = [NSString stringWithString:[blog objectForKey:@"description"]];
+                    [[self delegate] setSearchResultsVCBlogTitle:self.blogtitle userName:self.usernameToLoad description:blogDescription];
+                });
+            }
+        }else{
+            NSLog(@"no response with response %@", response.description);
         }
-//        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//        NSLog(@"**** returned : %@", jsonData);
     }];
     [dataTask resume];
 }
@@ -66,7 +72,6 @@
     NSURL *url = [NSURL URLWithString:link];
     NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
         self.downloadedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
-        NSLog(@"%@", self.downloadedImage.description);
     }];
     [downloadTask resume];
 }
@@ -87,13 +92,12 @@
     NSDictionary *response = [json objectForKey:@"response"];
     NSArray *posts = [response objectForKey:@"posts"];      // here is where all the posts are  -- this is the data that goes into uicollectionview
     NSLog(@"^^^^^^^^ posts count is: %lu", (unsigned long)posts.count);
+    [[self delegate] setNumberOfCVCItems:[NSNumber numberWithInteger:posts.count]];
     NSDictionary *mostRecentPost = [posts objectAtIndex:0];
     self.captionHTML =  [NSString stringWithString:[mostRecentPost objectForKey:@"caption"]];
     self.slug = [NSString stringWithString:[mostRecentPost objectForKey:@"slug"]];
-    
     for (int x = 0; x < posts.count; x++) {
         // for each post call a method that loads its slug, caption, picture
-        
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
