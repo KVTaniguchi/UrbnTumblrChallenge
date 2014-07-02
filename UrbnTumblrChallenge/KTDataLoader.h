@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol KTDataloaderDelegate <NSObject>
+@optional
 -(void)finishedDownloadingWithCaption:(NSString*)caption andSlug:(NSString*)slug;
 @end
 

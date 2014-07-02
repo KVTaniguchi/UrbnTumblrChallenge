@@ -21,7 +21,6 @@
 // OAuth Consumer Key:
 
 #import "KTDataLoader.h"
-#import <MMMarkdown/MMMarkdown.h>
 //#import <HTMLReader/HTMLReader.h>
 
 @interface KTDataLoader ()
@@ -86,45 +85,21 @@
 -(void)parseJSON:(NSDictionary*)json{
     NSLog(@"****************************");
     NSDictionary *response = [json objectForKey:@"response"];
-    NSArray *posts = [response objectForKey:@"posts"];
+    NSArray *posts = [response objectForKey:@"posts"];      // here is where all the posts are  -- this is the data that goes into uicollectionview
     NSLog(@"^^^^^^^^ posts count is: %lu", (unsigned long)posts.count);
     NSDictionary *mostRecentPost = [posts objectAtIndex:0];
     self.captionHTML =  [NSString stringWithString:[mostRecentPost objectForKey:@"caption"]];
-    NSLog(@"captionHTML: %@", self.captionHTML);
     self.slug = [NSString stringWithString:[mostRecentPost objectForKey:@"slug"]];
+    
+    for (int x = 0; x < posts.count; x++) {
+        // for each post call a method that loads its slug, caption, picture
+        
+    }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [[self delegate] finishedDownloadingWithCaption:self.captionHTML andSlug:self.slug];
     });
 }
-
-
-
-//NSString *htmlString = @"<h1>Header</h1><h2>Subheader</h2><p>Some <em>text</em></p><img src='http://blogs.babble.com/famecrawler/files/2010/11/mickey_mouse-1097.jpg' width=70 height=100 />";
-//NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-//textView.attributedText = attributedString;
-
-//NSString *html = [NSString stringWithFormat:@"<html><body>%@</body><html>", userText];
-//
-//// build the path where you're going to save the HTML
-//
-//NSString *docsFolder = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-//NSString *filename = [docsFolder stringByAppendingPathComponent:@"sample.html"];
-//
-//// save the NSString that contains the HTML to a file
-//
-//NSError *error;
-//[html writeToFile:filename atomically:NO encoding:NSUTF8StringEncoding error:&error];
-//NSURL *htmlString = [[NSBundle mainBundle]
-//                     URLForResource: @"helloworld" withExtension:@"html"];
-//NSAttributedString *stringWithHTMLAttributes = [[NSAttributedString alloc]   initWithFileURL:htmlString options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
-//
-//// Instantiate UITextView object
-//UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(20,20,self.view.frame.size.width,self.view.frame.size.height)];
-//
-//textView.attributedText=stringWithHTMLAttributes;
-//
-//[self.view addSubview:textView];
-
 
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
 }

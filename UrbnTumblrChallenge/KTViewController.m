@@ -48,23 +48,15 @@
     NSLog(@"finished downloading");
     NSLog(@"*** dataloader slug: %@", slug);
     NSLog(@"*** datalaoder caption: %@", caption);
-    
-
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-    NSLog(@"attr string: %@", attributedString);
-    
-    
     dispatch_async(dispatch_get_main_queue(), ^{
         _slugLabel.text = slug;
-//        _caption.text = document.textContent;
         _caption.attributedText = attributedString;
         _avatarImage.frame = CGRectMake(100, 400, 64, 64);
         [_avatarImage setImage:_dataLoader.downloadedImage];
         [self.view addSubview:_avatarImage];
     });
 }
-
-//textView.attributedText=stringWithHTMLAttributes;
 
 - (void)didReceiveMemoryWarning
 {

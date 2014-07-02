@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface KTPostCell : UICollectionViewCell
+@property (strong, nonatomic) IBOutlet UITextView *slugTextView;
+@property (strong, nonatomic) IBOutlet UIImageView *postImagesView;
+@property (strong, nonatomic) IBOutlet UITextView *captionTextView;
 
 @end
