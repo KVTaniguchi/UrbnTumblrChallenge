@@ -12,4 +12,8 @@
 @interface KTViewController : UIViewController <KTDataloaderDelegate>
 @property (strong, nonatomic) IBOutlet UIImageView *tumblrAvatar;
 @property (nonatomic,strong) UIImageView *avatarImage;
+@property (strong, nonatomic) IBOutlet UILabel *slugLabel;
+@property (strong, nonatomic) IBOutlet UITextView *caption;
+@property KTDataLoader *dataLoader;
+
 @end

@@ -18,15 +18,13 @@
 //Use of animations are encouraged
 //All code should be in Github
 
-// 1 type in username into tumblr api to get a response
-// 2 parse the text entry to add it to .tumblr.com
-
 
 
 #import "KTViewController.h"
 
+
 @interface KTViewController ()
-@property KTDataLoader *dataLoader;
+
 @end
 
 @implementation KTViewController
@@ -34,28 +32,39 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    self.dataLoader = [KTDataLoader new];
-    self.avatarImage = [UIImageView new];
-    [self.dataLoader makeSession];
-    [self.dataLoader grabBlogInfoForUser:@"dcastilaw32"];
-    [self.dataLoader grabBlogAvatarForUser:@"dcastilaw32"];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"dataloaderimage : %@", self.dataLoader.downloadedImage.debugDescription);
-            self.avatarImage.frame = CGRectMake(10, 300, 64, 64);
-            [self.avatarImage setImage:self.dataLoader.downloadedImage];
-            [self.view addSubview:self.avatarImage];
-            
-        });
-    });
+    _dataLoader = [KTDataLoader new];
+    _dataLoader.slug = [NSString new];
+    _dataLoader.captionHTML = [NSString new];
+    _dataLoader.delegate = self;
+    _avatarImage = [UIImageView new];
+    [_dataLoader makeSession];
+    [_dataLoader grabBlogInfoForUser:@"staff"];
+    [_dataLoader grabBlogAvatarForUser:@"staff"];
+    [_dataLoader getPostsForUser:@"staff"];
     [self.view setNeedsDisplay];
 }
 
--(void)finishedDownloading{
+-(void)finishedDownloadingWithCaption:(NSString*)caption andSlug:(NSString*)slug{
     NSLog(@"finished downloading");
-    [self.tumblrAvatar setImage:self.dataLoader.downloadedImage];
+    NSLog(@"*** dataloader slug: %@", slug);
+    NSLog(@"*** datalaoder caption: %@", caption);
+    
+
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+    NSLog(@"attr string: %@", attributedString);
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _slugLabel.text = slug;
+//        _caption.text = document.textContent;
+        _caption.attributedText = attributedString;
+        _avatarImage.frame = CGRectMake(100, 400, 64, 64);
+        [_avatarImage setImage:_dataLoader.downloadedImage];
+        [self.view addSubview:_avatarImage];
+    });
 }
+
+//textView.attributedText=stringWithHTMLAttributes;
 
 - (void)didReceiveMemoryWarning
 {

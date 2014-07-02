@@ -21,6 +21,8 @@
 // OAuth Consumer Key:
 
 #import "KTDataLoader.h"
+#import <MMMarkdown/MMMarkdown.h>
+//#import <HTMLReader/HTMLReader.h>
 
 @interface KTDataLoader ()
 
@@ -52,59 +54,87 @@
     NSURL *url = [NSURL URLWithString:link];
     NSURLSessionDataTask *dataTask = [self.session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (data) {
-            NSLog(@"data");
+            NSLog(@"got data");
         }
-        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSLog(@"**** returned : %@", jsonData);
+//        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//        NSLog(@"**** returned : %@", jsonData);
     }];
     [dataTask resume];
 }
 
 -(void)grabBlogAvatarForUser:(NSString*)userName{
-    // http://api.tumblr.com/v2/blog/david.tumblr.com/avatar
-    
     NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/avatar/info?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG", userName];
     NSURL *url = [NSURL URLWithString:link];
     NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
         self.downloadedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
         NSLog(@"%@", self.downloadedImage.description);
-        [[self delegate] finishedDownloading];
     }];
     [downloadTask resume];
 }
 
+-(void)getPostsForUser:(NSString*)userName{
+    // api.tumblr.com/v2/blog/{base-hostname}/posts[/type]?api_key={key}&[optional-params=]
+    NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/posts/?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG&reblog_info=true", userName];
+    NSURL *url = [NSURL URLWithString:link];
+    NSURLSessionDataTask *dataTask = [self.session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        [self parseJSON:jsonData];
+    }];
+    [dataTask resume];
+}
+
+-(void)parseJSON:(NSDictionary*)json{
+    NSLog(@"****************************");
+    NSDictionary *response = [json objectForKey:@"response"];
+    NSArray *posts = [response objectForKey:@"posts"];
+    NSLog(@"^^^^^^^^ posts count is: %lu", (unsigned long)posts.count);
+    NSDictionary *mostRecentPost = [posts objectAtIndex:0];
+    self.captionHTML =  [NSString stringWithString:[mostRecentPost objectForKey:@"caption"]];
+    NSLog(@"captionHTML: %@", self.captionHTML);
+    self.slug = [NSString stringWithString:[mostRecentPost objectForKey:@"slug"]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self delegate] finishedDownloadingWithCaption:self.captionHTML andSlug:self.slug];
+    });
+}
+
+
+
+//NSString *htmlString = @"<h1>Header</h1><h2>Subheader</h2><p>Some <em>text</em></p><img src='http://blogs.babble.com/famecrawler/files/2010/11/mickey_mouse-1097.jpg' width=70 height=100 />";
+//NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+//textView.attributedText = attributedString;
+
+//NSString *html = [NSString stringWithFormat:@"<html><body>%@</body><html>", userText];
+//
+//// build the path where you're going to save the HTML
+//
+//NSString *docsFolder = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+//NSString *filename = [docsFolder stringByAppendingPathComponent:@"sample.html"];
+//
+//// save the NSString that contains the HTML to a file
+//
+//NSError *error;
+//[html writeToFile:filename atomically:NO encoding:NSUTF8StringEncoding error:&error];
+//NSURL *htmlString = [[NSBundle mainBundle]
+//                     URLForResource: @"helloworld" withExtension:@"html"];
+//NSAttributedString *stringWithHTMLAttributes = [[NSAttributedString alloc]   initWithFileURL:htmlString options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+//
+//// Instantiate UITextView object
+//UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(20,20,self.view.frame.size.width,self.view.frame.size.height)];
+//
+//textView.attributedText=stringWithHTMLAttributes;
+//
+//[self.view addSubview:textView];
+
+
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
-    
 }
 
 -(void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session{
-    
 }
 
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes{
-    
 }
 
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
-    
 }
-
-// 1
-//NSURLSessionDownloadTask *getImageTask =
-//[session downloadTaskWithURL:[NSURL URLWithString:imageUrl]
-// 
-//           completionHandler:^(NSURL *location,
-//                               NSURLResponse *response,
-//                               NSError *error) {
-//               // 2
-//               UIImage *downloadedImage =
-//               [UIImage imageWithData:
-//                [NSData dataWithContentsOfURL:location]];
-//               //3
-//               dispatch_async(dispatch_get_main_queue(), ^{
-//                   // do stuff with image
-//                   _imageWithBlock.image = downloadedImage;
-//               });
-//           }];
-
 @end
