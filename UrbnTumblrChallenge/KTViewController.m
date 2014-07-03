@@ -5,18 +5,16 @@
 //  Created by Kevin Taniguchi on 6/30/14.
 //  Copyright (c) 2014 Taniguchi. All rights reserved.
 //
-//Usage of cocoa pods and third party libraries is fine
-//Enter a username or tumblr url to load a user's feed
-//Display feed items for all posts
-//Feed should be infinitely scrollable collection view supporting a way to refresh
+
+//DONE  Enter a username or tumblr url to load a user's feed
+//DONE  Display feed items for all posts
+//TODO INFINITE SCROLLING: Feed should be infinitely scrollable collection view supporting a way to refresh
 //If the post originated from another user, I should be able to tap another users avatar/user to transition to that users feed using a custom navigation transition
-//Full HTML rendering of posts (without web view)
+//DONE Full HTML rendering of posts (without web view)
 //Client side persistence for using core data
 //App should properly update when coming in and out of active states
 //App should be resilient to loss of network connectivity where possible
 //Unit tests are encouraged
-//Use of animations are encouraged
-//All code should be in Github
 
 #import "KTViewController.h"
 #import "KTPostCVC.h"
@@ -134,16 +132,13 @@
     [_postCVCContainerView setHidden:NO];
 }
 
--(void)populateSearchResultsVC{
-    
-}
-
 -(void)createCollectionView{
     UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
     flowLayout.minimumLineSpacing = .10;
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     postsCVC = [[self storyboard]instantiateViewControllerWithIdentifier:@"KTPostCVC"];
     [postsCVC.collectionView setCollectionViewLayout:flowLayout];
+    [postsCVC setDelegate:self];
     [postsCVC.collectionView setDelegate:self];
     [postsCVC.collectionView setPagingEnabled:NO];
     [postsCVC.collectionView setUserInteractionEnabled:YES];
@@ -153,7 +148,6 @@
     postsCVC.numberOfPostsToShow = [NSNumber numberWithInt:1];
     [postsCVC.view setFrame:CGRectMake(0, 0, _postCVCContainerView.frame.size.width, _postCVCContainerView.frame.size.height)];
     [self addChildViewController:postsCVC];
-    // set data for the collectionview
     [_postCVCContainerView addSubview:postsCVC.view];
 }
 
@@ -162,14 +156,17 @@
 }
 
 -(void)finishedDownloadingPosts{
-    NSLog(@"finished downloading");
     dispatch_async(dispatch_get_main_queue(), ^{
-        _tumblrAvatar.image = _dataLoader.downloadedImage;
-        _blogTitleLabel.text = _dataLoader.blogtitle;
-        _userNameLabel.text = _dataLoader.usernameToLoad;
+        [self setTargetLabelValues];
         NSLog(@"dataloader posts count: %lu", (unsigned long)_dataLoader.posts.count);
         [postsCVC.collectionView reloadData];
     });
+}
+
+-(void)setTargetLabelValues{
+    _tumblrAvatar.image = _dataLoader.downloadedImage;
+    _blogTitleLabel.text = _dataLoader.blogtitle;
+    _userNameLabel.text = _dataLoader.usernameToLoad;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -203,6 +200,34 @@
     }];
 }
 
+-(void)rebloggerLoad:(NSString *)rebloggerName{
+    NSLog(@"from view controller: %@", rebloggerName);
+    _userSearchTextField.text = rebloggerName;
+    // display custom view with animation simulating a traditional nav controller push
+    UIView *fakeTransition = [[UIView alloc]initWithFrame:CGRectMake(320, 0, 320, 568)];
+    fakeTransition.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:229.0f/255.0f blue:74.0f/255.0f alpha:1.0];
+    [self.view addSubview:fakeTransition];
+    [UIView animateWithDuration:1.0 animations:^{
+        fakeTransition.frame = CGRectMake(0, 0, 320, 568);
+    } completion:^(BOOL finished) {
+        [_dataLoader grabBlogInfoForUser:rebloggerName];
+        [[KTPostStore sharedStore]clearAllPosts];
+        [_dataLoader getPostsForUser:rebloggerName];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (finished) {
+                [UIView animateWithDuration:1.0 animations:^{
+                    fakeTransition.alpha = 0.0f;
+                } completion:^(BOOL finished) {
+                    if (finished) {
+                        [fakeTransition removeFromSuperview];
+                    }
+                }];
+            }
+        });
+        
+    }];
+    
+}
 
 - (IBAction)refreshButtonPressed:(id)sender {
     [[KTPostStore sharedStore]clearAllPosts];

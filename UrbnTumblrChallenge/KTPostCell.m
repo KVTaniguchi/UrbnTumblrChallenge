@@ -28,4 +28,7 @@
 }
 */
 
+- (IBAction)reblogButtonPressed:(id)sender {
+    [[self delegate] loadReblogger:self.rebloggerNameLabel.text];
+}
 @end

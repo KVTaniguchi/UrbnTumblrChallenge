@@ -149,6 +149,17 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jR5-lN-suL">
+                                            <rect key="frame" x="182" y="121" width="108" height="101"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <state key="normal">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="reblogButtonPressed:" destination="9Ic-PR-jLx" eventType="touchUpInside" id="AAb-4x-P7E"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
@@ -157,6 +168,7 @@
                                 <connections>
                                     <outlet property="captionTextView" destination="8cB-do-QhI" id="hTH-xo-68e"/>
                                     <outlet property="postImagesView" destination="N3Z-98-Ass" id="dfv-I5-nc8"/>
+                                    <outlet property="reblogLoadButton" destination="jR5-lN-suL" id="XBS-TQ-PrP"/>
                                     <outlet property="rebloggedLabel" destination="6Cl-yy-8AG" id="EON-dJ-Tao"/>
                                     <outlet property="rebloggerAvatarImage" destination="drj-tk-RoX" id="bam-7W-DgJ"/>
                                     <outlet property="rebloggerNameLabel" destination="1qS-wh-TNu" id="nbB-iF-YaU"/>

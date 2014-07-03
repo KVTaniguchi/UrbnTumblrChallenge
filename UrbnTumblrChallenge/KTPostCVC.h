@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "KTDataLoader.h"
+#import "KTPostCell.h"
 
-@interface KTPostCVC : UICollectionViewController <KTDataloaderDelegate>
+@protocol KTPostCVCDelegate <NSObject>
+
+@optional
+-(void)rebloggerLoad:(NSString*)rebloggerName;
+@end
+
+@interface KTPostCVC : UICollectionViewController <KTDataloaderDelegate, KTPostCellDelegate>
+@property (nonatomic,strong) id<KTPostCVCDelegate>delegate;
 @property (nonatomic,strong) NSNumber *numberOfPostsToShow;
 @end

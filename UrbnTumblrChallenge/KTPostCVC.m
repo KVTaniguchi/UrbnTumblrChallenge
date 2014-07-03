@@ -7,7 +7,6 @@
 //
 
 #import "KTPostCVC.h"
-#import "KTPostCell.h"
 #import "KTPostStore.h"
 #import "KTDataLoader.h"
 
@@ -32,14 +31,11 @@
     [super didReceiveMemoryWarning];
 }
 
--(void)setNumberOfCVCItems:(NSNumber *)number{
-    
-}
-
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *post = [[[KTPostStore sharedStore]allPosts]objectAtIndex:indexPath.row];
     NSLog(@"post: %@", post);
     KTPostCell *postCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"postCell" forIndexPath:indexPath];
+    postCell.delegate = self;
     if ([post objectForKey:@"caption"] != nil) {
         NSString *caption = [NSString stringWithString:[post objectForKey:@"caption"]];
         NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
@@ -87,6 +83,11 @@
         [postCell.postImagesView setFrame:CGRectMake(58, 57, 165, 165)];
     }
     return postCell;
+}
+
+-(void)loadReblogger:(NSString *)rebloggerName{
+    NSLog(@"CVC loading reblogger: %@", rebloggerName);
+    [[self delegate] rebloggerLoad:rebloggerName];
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
