@@ -1,0 +1,10 @@
+PODS:
+  - RZTransitions (1.0)
+
+DEPENDENCIES:
+  - RZTransitions (~> 1.0)
+
+SPEC CHECKSUMS:
+  RZTransitions: 73626a7954b27d2a6d134153dae6c0f7d313b2ab
+
+COCOAPODS: 0.33.1
