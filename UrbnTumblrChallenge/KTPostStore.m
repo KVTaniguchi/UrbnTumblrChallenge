@@ -39,4 +39,10 @@
     return allPosts;
 }
 
+-(void)clearAllPosts{
+    [allPosts removeAllObjects];
+}
+
+
+
 @end

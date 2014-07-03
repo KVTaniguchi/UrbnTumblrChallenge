@@ -39,9 +39,6 @@
 }
 
 -(void)grabBlogInfoForUser:(NSString*)textFieldEntry{
-    NSLog(@"called");
-    // http://api.tumblr.com/v2/blog/scipsy.tumblr.com/info
-    // http://api.tumblr.com/v2/blog/good.tumblr.com/info
     NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/info?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG", textFieldEntry];
     NSURL *url = [NSURL URLWithString:link];
     NSURLSessionDataTask *dataTask = [self.session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -66,6 +63,17 @@
     }];
     [dataTask resume];
 }
+
+-(void)grabReblogAvatarForUser:(NSString *)userName :(myCompletion)compBlock{
+    NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/avatar/info?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG", userName];
+    NSURL *url = [NSURL URLWithString:link];
+    NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        self.downloadedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
+        compBlock(YES);
+    }];
+    [downloadTask resume];
+}
+
 
 -(void)grabBlogAvatarForUser:(NSString*)userName{
     NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/avatar/info?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG", userName];

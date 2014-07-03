@@ -16,9 +16,12 @@
 -(void)searchReturnedNoResults;
 @end
 
+typedef void(^myCompletion)(BOOL);
+
 @interface KTDataLoader : NSObject <NSURLSessionDownloadDelegate, NSURLSessionTaskDelegate>
 -(void)grabBlogInfoForUser:(NSString*)textFieldEntry;
 -(void)grabBlogAvatarForUser:(NSString*)userName;
+-(void)grabReblogAvatarForUser:(NSString*)userName :(myCompletion)compBlock;
 -(void)makeSession;
 -(void)getPostsForUser:(NSString*)userName;
 @property (nonatomic,weak) id<KTDataloaderDelegate>delegate;

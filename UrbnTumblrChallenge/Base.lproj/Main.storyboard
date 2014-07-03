@@ -156,7 +156,7 @@
                                 <connections>
                                     <outlet property="captionTextView" destination="8cB-do-QhI" id="hTH-xo-68e"/>
                                     <outlet property="postImagesView" destination="N3Z-98-Ass" id="dfv-I5-nc8"/>
-                                    <outlet property="reblogAvatar" destination="drj-tk-RoX" id="hAo-KW-kgx"/>
+                                    <outlet property="rebloggedLabel" destination="6Cl-yy-8AG" id="EON-dJ-Tao"/>
                                     <outlet property="rebloggerAvatarImage" destination="drj-tk-RoX" id="bam-7W-DgJ"/>
                                     <outlet property="rebloggerNameLabel" destination="1qS-wh-TNu" id="nbB-iF-YaU"/>
                                     <outlet property="slugTextView" destination="o3S-k6-0T6" id="P6u-J0-ruC"/>

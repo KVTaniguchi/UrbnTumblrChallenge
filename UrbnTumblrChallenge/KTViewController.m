@@ -20,6 +20,7 @@
 
 #import "KTViewController.h"
 #import "KTPostCVC.h"
+#import "KTPostStore.h"
 
 @interface KTViewController (){
     KTPostCVC *postsCVC;
@@ -42,22 +43,20 @@
     _dataLoader = [KTDataLoader new];
     _dataLoader.delegate = self;
     [_dataLoader makeSession];
-    
+    _userSearchTextField.delegate = self;
     [_postCVCContainerView setHidden:YES];
-    _userNameLabel.hidden = YES;
-    _blogTitleLabel.hidden = YES;
-    _refreshButton.hidden = YES;
+    [self hideTargetLabels];
     [self createSearchReultsVC];
     [self.view addSubview:_searchResultsContainerView];
-
-//    [_dataLoader getPostsForUser:@"asd1341241"];
-    // call the above methods in response to delegate call from
     [self createCollectionView];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hitDataLoaderBlogSearch) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 -(void)hitDataLoaderBlogSearch{
+    [self hideTargetLabels];
+    [[KTPostStore sharedStore]clearAllPosts];
+    [postsCVC.collectionView reloadData];
     [_searchResultsContainerView setAlpha:1.0f];
     [_searchResultsContainerView setHidden:NO];
     [_dataLoader grabBlogInfoForUser:_userSearchTextField.text];
@@ -94,6 +93,20 @@
     [self hideSearchResultsViews];
 }
 
+-(void)hideTargetLabels{
+    _tumblrAvatar.hidden =YES;
+    _userNameLabel.hidden = YES;
+    _blogTitleLabel.hidden = YES;
+    _refreshButton.hidden = YES;
+}
+
+-(void)showTargetLabels{
+    _tumblrAvatar.hidden = NO;
+    _userNameLabel.hidden = NO;
+    _blogTitleLabel.hidden = NO;
+    _refreshButton.hidden = NO;
+}
+
 -(void)hideSearchResultsViews{
     [_searchResultsVC.viewThisFeedButton setHidden:YES];
     [_searchResultsVC.noResultsLabel setHidden:NO];
@@ -111,11 +124,6 @@
     [_searchResultsVC.blogTitleLabel setHidden:NO];
     [_searchResultsVC.descriptionTextView setHidden:NO];
 }
-//\@property (strong, nonatomic) IBOutlet UILabel *userName;
-//@property (strong, nonatomic) IBOutlet UIImageView *userAvatarImageView;
-//@property (strong, nonatomic) IBOutlet UILabel *blogTitleLabel;
-//@property (strong, nonatomic) IBOutlet UITextView *descriptionTextView;
-//- (IBAction)viewThisFeedButtonPress:(id)sender;
 
 -(void)hideCollectionView{
     [_postCVCContainerView setHidden:YES];
@@ -146,10 +154,7 @@
     [self addChildViewController:postsCVC];
     // set data for the collectionview
     [_postCVCContainerView addSubview:postsCVC.view];
-    [postsCVC.collectionView reloadData];
 }
-
-//    collectionViewController.routesToDisplay = [NSMutableArray new];
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     return _postCVCContainerView.frame.size;
@@ -189,12 +194,11 @@
         if (finished) {
             [UIView animateWithDuration:.5 animations:^{
                 [_postCVCContainerView setAlpha:1.0];
-                [_blogTitleLabel setHidden:NO];
-                [_userNameLabel setHidden:NO];
-                [_refreshButton setHidden:NO];
+                [self showTargetLabels];
             }];
             [self unhideCollectionView];
             [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
+            [postsCVC.collectionView reloadData];
         }
     }];
 }

@@ -9,9 +9,11 @@
 #import "KTPostCVC.h"
 #import "KTPostCell.h"
 #import "KTPostStore.h"
+#import "KTDataLoader.h"
 
 @interface KTPostCVC ()
 @property (nonatomic,strong) NSNumber *numberOfItemsToShow;
+@property (nonatomic,strong) KTDataLoader *dataLoader;
 @end
 
 @implementation KTPostCVC
@@ -20,6 +22,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _dataLoader = [KTDataLoader new];
+    [_dataLoader makeSession];
+    _dataLoader.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,15 +54,34 @@
         NSURL *photoURL = [NSURL URLWithString:[photo objectForKey:@"url"]];
         postCell.postImagesView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:photoURL]];
     }
-    
     if ([post objectForKey:@"slug"] != nil) {
         postCell.slugTextView.text = [post objectForKey:@"slug"];
     }
-    if ([post objectForKey:@"reblogged"] != nil) {
-        
+    if ([post objectForKey:@"reblogged_from_name"] != nil) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:1.5 animations:^{
+                [postCell.postImagesView setFrame:CGRectMake(0, 57, 165, 165)];
+            } completion:^(BOOL finished) {
+                [postCell.rebloggedLabel setHidden:NO];
+                [postCell.rebloggerNameLabel setHidden:NO];
+                [postCell.rebloggerAvatarImage setHidden:NO];
+                NSString *reblogger = [post objectForKey:@"reblogged_from_name"];
+                postCell.rebloggerNameLabel.text = reblogger;
+                [_dataLoader grabReblogAvatarForUser:reblogger :^(BOOL completed) {
+                    if (completed) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            postCell.rebloggerAvatarImage.image = _dataLoader.downloadedImage;
+                        });
+                    }
+                }];
+            }];
+        });
+    }else{
+        [postCell.rebloggerNameLabel setHidden:YES];
+        [postCell.rebloggedLabel setHidden:YES];
+        [postCell.rebloggerAvatarImage setHidden:YES];
+        [postCell.postImagesView setFrame:CGRectMake(58, 57, 165, 165)];
     }
-    
-    
     return postCell;
 }
 
@@ -69,7 +93,6 @@
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
-
 
 #pragma mark - Navigation
 

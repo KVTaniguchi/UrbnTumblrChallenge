@@ -16,4 +16,5 @@
 +(KTPostStore*)sharedStore;
 -(NSArray*)allPosts;
 -(NSArray*)setPosts:(NSArray*)posts;
+-(void)clearAllPosts;
 @end
