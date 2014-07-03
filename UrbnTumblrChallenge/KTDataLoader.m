@@ -21,7 +21,7 @@
 // OAuth Consumer Key:
 
 #import "KTDataLoader.h"
-//#import <HTMLReader/HTMLReader.h>
+#import "KTPostStore.h"
 
 @interface KTDataLoader ()
 
@@ -72,6 +72,7 @@
     NSURL *url = [NSURL URLWithString:link];
     NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
         self.downloadedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
+        [[self delegate] setAvatarImage];
     }];
     [downloadTask resume];
 }
@@ -88,20 +89,15 @@
 }
 
 -(void)parseJSON:(NSDictionary*)json{
-    NSLog(@"****************************");
+
     NSDictionary *response = [json objectForKey:@"response"];
-    NSArray *posts = [response objectForKey:@"posts"];      // here is where all the posts are  -- this is the data that goes into uicollectionview
-    NSLog(@"^^^^^^^^ posts count is: %lu", (unsigned long)posts.count);
-    [[self delegate] setNumberOfCVCItems:[NSNumber numberWithInteger:posts.count]];
-    NSDictionary *mostRecentPost = [posts objectAtIndex:0];
-    self.captionHTML =  [NSString stringWithString:[mostRecentPost objectForKey:@"caption"]];
-    self.slug = [NSString stringWithString:[mostRecentPost objectForKey:@"slug"]];
-    for (int x = 0; x < posts.count; x++) {
+    _posts = [response objectForKey:@"posts"]; // here is where all the posts are  -- this is the data that goes into uicollectionview
+    for (int x = 0; x < _posts.count; x++) {
         // for each post call a method that loads its slug, caption, picture
+        [[KTPostStore sharedStore]setPosts:[_posts objectAtIndex:x]];
     }
-    
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[self delegate] finishedDownloadingWithCaption:self.captionHTML andSlug:self.slug];
+        [[self delegate] finishedDownloadingPosts];
     });
 }
 

@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "KTDataLoader.h"
+#import "KTSearchResultsVC.h"
 
-@interface KTViewController : UIViewController <KTDataloaderDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate>
+@interface KTViewController : UIViewController <KTDataloaderDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, SearchDelegate>
 @property (strong, nonatomic) IBOutlet UIImageView *tumblrAvatar;
 @property KTDataLoader *dataLoader;
 

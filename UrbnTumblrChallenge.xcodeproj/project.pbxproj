@@ -24,6 +24,7 @@
 		C784F44F1961C6D1004045DC /* KTDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F44E1961C6D1004045DC /* KTDataLoader.m */; };
 		C784F4511961D578004045DC /* KTBlogInfoTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F4501961D578004045DC /* KTBlogInfoTest.m */; };
 		C784F4531961D591004045DC /* KTCollectionViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F4521961D591004045DC /* KTCollectionViewTests.m */; };
+		C797AED1196504E50009FE0F /* KTPostStore.m in Sources */ = {isa = PBXBuildFile; fileRef = C797AED0196504E50009FE0F /* KTPostStore.m */; };
 		C7989F15196456950096B741 /* KTPostCVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C7989F14196456950096B741 /* KTPostCVC.m */; };
 		C7AB06991964990B00473E24 /* KTSearchResultsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C7AB06981964990B00473E24 /* KTSearchResultsVC.m */; };
 		D86717A961C441BBA34BF5BD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D6898003DD478C942353C6 /* libPods.a */; };
@@ -66,6 +67,8 @@
 		C784F44E1961C6D1004045DC /* KTDataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTDataLoader.m; sourceTree = "<group>"; };
 		C784F4501961D578004045DC /* KTBlogInfoTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTBlogInfoTest.m; sourceTree = "<group>"; };
 		C784F4521961D591004045DC /* KTCollectionViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTCollectionViewTests.m; sourceTree = "<group>"; };
+		C797AECF196504E50009FE0F /* KTPostStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTPostStore.h; sourceTree = "<group>"; };
+		C797AED0196504E50009FE0F /* KTPostStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTPostStore.m; sourceTree = "<group>"; };
 		C7989F13196456950096B741 /* KTPostCVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTPostCVC.h; sourceTree = "<group>"; };
 		C7989F14196456950096B741 /* KTPostCVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTPostCVC.m; sourceTree = "<group>"; };
 		C7AB06971964990B00473E24 /* KTSearchResultsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTSearchResultsVC.h; sourceTree = "<group>"; };
@@ -144,6 +147,8 @@
 				C784F41F1961C4C7004045DC /* Supporting Files */,
 				C7AB06971964990B00473E24 /* KTSearchResultsVC.h */,
 				C7AB06981964990B00473E24 /* KTSearchResultsVC.m */,
+				C797AECF196504E50009FE0F /* KTPostStore.h */,
+				C797AED0196504E50009FE0F /* KTPostStore.m */,
 			);
 			path = UrbnTumblrChallenge;
 			sourceTree = "<group>";
@@ -324,6 +329,7 @@
 			files = (
 				C7430CB319634621005B0B99 /* KTPostCell.m in Sources */,
 				C7AB06991964990B00473E24 /* KTSearchResultsVC.m in Sources */,
+				C797AED1196504E50009FE0F /* KTPostStore.m in Sources */,
 				C7989F15196456950096B741 /* KTPostCVC.m in Sources */,
 				C784F42F1961C4C7004045DC /* KTViewController.m in Sources */,
 				C784F44F1961C6D1004045DC /* KTDataLoader.m in Sources */,

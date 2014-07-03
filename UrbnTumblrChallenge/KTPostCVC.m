@@ -8,7 +8,7 @@
 
 #import "KTPostCVC.h"
 #import "KTPostCell.h"
-
+#import "KTPostStore.h"
 
 @interface KTPostCVC ()
 @property (nonatomic,strong) NSNumber *numberOfItemsToShow;
@@ -27,6 +27,9 @@
     [super didReceiveMemoryWarning];
 }
 
+-(void)setNumberOfCVCItems:(NSNumber *)number{
+    
+}
 
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     KTPostCell *postCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"postCell" forIndexPath:indexPath];
@@ -34,7 +37,8 @@
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 1;
+    NSLog(@"post store count: %lu", (unsigned long)[[[KTPostStore sharedStore]allPosts] count]);
+    return [[[KTPostStore sharedStore]allPosts] count];
 }
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{

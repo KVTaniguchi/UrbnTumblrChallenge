@@ -10,5 +10,5 @@
 #import "KTDataLoader.h"
 
 @interface KTPostCVC : UICollectionViewController <KTDataloaderDelegate>
-
+@property (nonatomic,strong) NSNumber *numberOfPostsToShow;
 @end

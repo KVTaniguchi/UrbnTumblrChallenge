@@ -10,9 +10,9 @@
 
 @protocol KTDataloaderDelegate <NSObject>
 @optional
--(void)finishedDownloadingWithCaption:(NSString*)caption andSlug:(NSString*)slug;
--(void)setNumberOfCVCItems:(NSNumber*)number;
+-(void)finishedDownloadingPosts;
 -(void)setSearchResultsVCBlogTitle:(NSString*)blogTitle userName:(NSString*)userName description:(NSString*)description;
+-(void)setAvatarImage;
 -(void)searchReturnedNoResults;
 @end
 
@@ -25,6 +25,5 @@
 @property (nonatomic, strong) UIImage *downloadedImage;
 @property (nonatomic,strong) NSString *usernameToLoad;
 @property (nonatomic,strong) NSString *blogtitle;
-@property (nonatomic,strong) NSString *slug;
-@property (nonatomic,strong) NSString *captionHTML;
+@property (nonatomic,strong) NSArray *posts;
 @end

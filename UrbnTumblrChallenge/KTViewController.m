@@ -20,16 +20,16 @@
 
 #import "KTViewController.h"
 #import "KTPostCVC.h"
-#import "KTSearchResultsVC.h"
 
-@interface KTViewController ()
+@interface KTViewController (){
+    KTPostCVC *postsCVC;
+}
 - (IBAction)refreshButtonPressed:(id)sender;
 @property (strong, nonatomic) IBOutlet UIButton *refreshButton;
 @property (strong, nonatomic) IBOutlet UITextField *userSearchTextField;
 @property (strong, nonatomic) IBOutlet UIView *postCVCContainerView;
 @property (strong, nonatomic) IBOutlet UILabel *blogTitleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
-@property (strong, nonatomic) KTPostCVC *postsCVC;
 @property (strong, nonatomic) IBOutlet UIView *searchResultsContainerView;
 @property (strong, nonatomic) KTSearchResultsVC *searchResultsVC;
 @end
@@ -40,39 +40,36 @@
 {
     [super viewDidLoad];
     _dataLoader = [KTDataLoader new];
-    _dataLoader.slug = [NSString new];
-    _dataLoader.captionHTML = [NSString new];
     _dataLoader.delegate = self;
     [_dataLoader makeSession];
     
+    [_postCVCContainerView setHidden:YES];
     _userNameLabel.hidden = YES;
     _blogTitleLabel.hidden = YES;
     _refreshButton.hidden = YES;
-    
-    // call grab blog info IF the response is ok and you get a
-    [_dataLoader grabBlogInfoForUser:@"staff"];
-    
     [self createSearchReultsVC];
-    
-//    [_dataLoader grabBlogAvatarForUser:@"asd1341241"];
+    [self.view addSubview:_searchResultsContainerView];
+
 //    [_dataLoader getPostsForUser:@"asd1341241"];
     // call the above methods in response to delegate call from
-    
-    [self.view setNeedsDisplay];
     [self createCollectionView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hitDataLoaderBlogSearch) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 -(void)hitDataLoaderBlogSearch{
+    [_searchResultsContainerView setAlpha:1.0f];
+    [_searchResultsContainerView setHidden:NO];
     [_dataLoader grabBlogInfoForUser:_userSearchTextField.text];
+    [_postCVCContainerView setAlpha:0.0];
 }
 
 -(void)searchReturnedNoResults{
-    
+    [self hideSearchResultsViews];
 }
 
 -(void)setSearchResultsVCBlogTitle:(NSString *)blogTitle userName:(NSString *)userName description:(NSString *)description{
+    [_dataLoader grabBlogAvatarForUser:userName];
     [_searchResultsVC.noResultsLabel setHidden:YES];
     [self unhideSearchResultsViews];
     _searchResultsVC.userName.text = userName;
@@ -81,15 +78,25 @@
     _searchResultsVC.descriptionTextView.attributedText = attributedString;
 }
 
+-(void)setAvatarImage{
+    NSLog(@"image setter called");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _searchResultsVC.userAvatarImageView.image = _dataLoader.downloadedImage;
+    });
+}
+
 -(void)createSearchReultsVC{
     _searchResultsVC = [[self storyboard]instantiateViewControllerWithIdentifier:@"KTSearchResultsVC"];
-    [_searchResultsVC.view setFrame:_searchResultsContainerView.frame];
+    _searchResultsVC.delegate = self;
+    [_searchResultsVC.view setFrame:CGRectMake(0, 0, _searchResultsContainerView.frame.size.width, _searchResultsContainerView.frame.size.height)];
     [self addChildViewController:_searchResultsVC];
     [_searchResultsContainerView addSubview:_searchResultsVC.view];
     [self hideSearchResultsViews];
 }
 
 -(void)hideSearchResultsViews{
+    [_searchResultsVC.viewThisFeedButton setHidden:YES];
+    [_searchResultsVC.noResultsLabel setHidden:NO];
     [_searchResultsVC.userName setHidden:YES];
     [_searchResultsVC.userAvatarImageView setHidden:YES];
     [_searchResultsVC.blogTitleLabel setHidden:YES];
@@ -97,6 +104,8 @@
 }
 
 -(void)unhideSearchResultsViews{
+    [_searchResultsVC.viewThisFeedButton setHidden:NO];
+    [_searchResultsVC.noResultsLabel setHidden:YES];
     [_searchResultsVC.userName setHidden:NO];
     [_searchResultsVC.userAvatarImageView setHidden:NO];
     [_searchResultsVC.blogTitleLabel setHidden:NO];
@@ -108,6 +117,14 @@
 //@property (strong, nonatomic) IBOutlet UITextView *descriptionTextView;
 //- (IBAction)viewThisFeedButtonPress:(id)sender;
 
+-(void)hideCollectionView{
+    [_postCVCContainerView setHidden:YES];
+}
+
+-(void)unhideCollectionView{
+    [_postCVCContainerView setHidden:NO];
+}
+
 -(void)populateSearchResultsVC{
     
 }
@@ -116,19 +133,20 @@
     UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
     flowLayout.minimumLineSpacing = .10;
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    _postsCVC = [[self storyboard]instantiateViewControllerWithIdentifier:@"KTPostCVC"];
-    [_postsCVC.collectionView setCollectionViewLayout:flowLayout];
-    [_postsCVC.collectionView setDelegate:self];
-    [_postsCVC.collectionView setPagingEnabled:NO];
-    [_postsCVC.collectionView setUserInteractionEnabled:YES];
-    [_postsCVC.collectionView setDataSource:_postsCVC];
-    [_postsCVC.collectionView setBackgroundColor:[UIColor yellowColor]];
-    [_postsCVC.view setBackgroundColor:[UIColor redColor]];
-    [_postsCVC.view setFrame:CGRectMake(0, 0, _postCVCContainerView.frame.size.width, _postCVCContainerView.frame.size.height)];
-    [self addChildViewController:_postsCVC];
+    postsCVC = [[self storyboard]instantiateViewControllerWithIdentifier:@"KTPostCVC"];
+    [postsCVC.collectionView setCollectionViewLayout:flowLayout];
+    [postsCVC.collectionView setDelegate:self];
+    [postsCVC.collectionView setPagingEnabled:NO];
+    [postsCVC.collectionView setUserInteractionEnabled:YES];
+    [postsCVC.collectionView setDataSource:postsCVC];
+    [postsCVC.collectionView setBackgroundColor:[UIColor yellowColor]];
+    [postsCVC.view setBackgroundColor:[UIColor redColor]];
+    postsCVC.numberOfPostsToShow = [NSNumber numberWithInt:1];
+    [postsCVC.view setFrame:CGRectMake(0, 0, _postCVCContainerView.frame.size.width, _postCVCContainerView.frame.size.height)];
+    [self addChildViewController:postsCVC];
     // set data for the collectionview
-    [_postCVCContainerView addSubview:_postsCVC.view];
-    [_postsCVC.collectionView reloadData];
+    [_postCVCContainerView addSubview:postsCVC.view];
+    [postsCVC.collectionView reloadData];
 }
 
 //    collectionViewController.routesToDisplay = [NSMutableArray new];
@@ -137,20 +155,18 @@
     return _postCVCContainerView.frame.size;
 }
 
--(void)finishedDownloadingWithCaption:(NSString*)caption andSlug:(NSString*)slug{
+-(void)finishedDownloadingPosts{
     NSLog(@"finished downloading");
-//    NSLog(@"*** dataloader slug: %@", slug);
-//    NSLog(@"*** datalaoder caption: %@", caption);
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
     dispatch_async(dispatch_get_main_queue(), ^{
         _tumblrAvatar.image = _dataLoader.downloadedImage;
         _blogTitleLabel.text = _dataLoader.blogtitle;
         _userNameLabel.text = _dataLoader.usernameToLoad;
-//        _slugLabel.text = slug;
-//        _caption.attributedText = attributedString;
-//        _avatarImage.frame = CGRectMake(100, 400, 64, 64);
-//        [_avatarImage setImage:_dataLoader.downloadedImage];
-//        [self.view addSubview:_avatarImage];
+        NSLog(@"dataloader posts count: %lu", (unsigned long)_dataLoader.posts.count);
+        postsCVC.numberOfPostsToShow = [NSNumber numberWithInteger:[_dataLoader.posts count]];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [postsCVC.collectionView reloadData];
+        });
+
     });
 }
 
@@ -163,8 +179,26 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
+
+-(void)pushToCollectionView{
+    [UIView animateWithDuration:0.5f animations:^{
+        [_searchResultsContainerView setAlpha:0.0f];
+        [_searchResultsContainerView setHidden:YES];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [UIView animateWithDuration:.5 animations:^{
+                [_postCVCContainerView setAlpha:1.0];
+                [_blogTitleLabel setHidden:NO];
+                [_userNameLabel setHidden:NO];
+                [_refreshButton setHidden:NO];
+            }];
+            [self unhideCollectionView];
+            [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
+        }
+    }];
+}
+
 
 - (IBAction)refreshButtonPressed:(id)sender {
 }

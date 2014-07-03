@@ -27,5 +27,6 @@
 }
 
 - (IBAction)viewThisFeedButtonPress:(id)sender {
+    [[self delegate] pushToCollectionView];
 }
 @end
