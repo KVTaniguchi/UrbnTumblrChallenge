@@ -12,5 +12,6 @@
 @property (strong, nonatomic) IBOutlet UITextView *slugTextView;
 @property (strong, nonatomic) IBOutlet UIImageView *postImagesView;
 @property (strong, nonatomic) IBOutlet UITextView *captionTextView;
+@property (strong, nonatomic) IBOutlet UIImageView *secondImageView;
 
 @end

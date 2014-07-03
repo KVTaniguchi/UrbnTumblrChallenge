@@ -78,7 +78,6 @@
 }
 
 -(void)getPostsForUser:(NSString*)userName{
-    // api.tumblr.com/v2/blog/{base-hostname}/posts[/type]?api_key={key}&[optional-params=]
     NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/posts/?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG&reblog_info=true", userName];
     NSURL *url = [NSURL URLWithString:link];
     NSURLSessionDataTask *dataTask = [self.session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -89,11 +88,9 @@
 }
 
 -(void)parseJSON:(NSDictionary*)json{
-
     NSDictionary *response = [json objectForKey:@"response"];
-    _posts = [response objectForKey:@"posts"]; // here is where all the posts are  -- this is the data that goes into uicollectionview
+    _posts = [response objectForKey:@"posts"];
     for (int x = 0; x < _posts.count; x++) {
-        // for each post call a method that loads its slug, caption, picture
         [[KTPostStore sharedStore]setPosts:[_posts objectAtIndex:x]];
     }
     dispatch_async(dispatch_get_main_queue(), ^{

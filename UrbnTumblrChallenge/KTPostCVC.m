@@ -32,7 +32,19 @@
 }
 
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *post = [[[KTPostStore sharedStore]allPosts]objectAtIndex:indexPath.row];
+    NSLog(@"post: %@", post);
     KTPostCell *postCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"postCell" forIndexPath:indexPath];
+    if ([post objectForKey:@"caption"] != nil) {
+        NSString *caption = [NSString stringWithString:[post objectForKey:@"caption"]];
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+        postCell.captionTextView.attributedText = attributedString;
+    }
+
+    if ([post objectForKey:@"slug"] != nil) {
+        postCell.slugTextView.text = [post objectForKey:@"slug"];
+    }
+    
     return postCell;
 }
 

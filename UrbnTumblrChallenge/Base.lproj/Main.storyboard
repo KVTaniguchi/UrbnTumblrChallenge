@@ -108,21 +108,25 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Caption" translatesAutoresizingMaskIntoConstraints="NO" id="8cB-do-QhI">
-                                            <rect key="frame" x="0.0" y="222" width="290" height="204"/>
+                                            <rect key="frame" x="0.0" y="222" width="290" height="190"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="SLUG" translatesAutoresizingMaskIntoConstraints="NO" id="o3S-k6-0T6">
-                                            <rect key="frame" x="0.0" y="0.0" width="290" height="104"/>
+                                            <rect key="frame" x="0.0" y="2" width="290" height="101"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N3Z-98-Ass">
-                                            <rect key="frame" x="0.0" y="106" width="290" height="116"/>
+                                            <rect key="frame" x="0.0" y="106" width="147" height="115"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R4X-Jc-eXA">
+                                            <rect key="frame" x="150" y="106" width="140" height="115"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                     </subviews>
@@ -132,6 +136,7 @@
                                 <connections>
                                     <outlet property="captionTextView" destination="8cB-do-QhI" id="hTH-xo-68e"/>
                                     <outlet property="postImagesView" destination="N3Z-98-Ass" id="dfv-I5-nc8"/>
+                                    <outlet property="secondImageView" destination="R4X-Jc-eXA" id="lKE-qp-xgr"/>
                                     <outlet property="slugTextView" destination="o3S-k6-0T6" id="P6u-J0-ruC"/>
                                 </connections>
                             </collectionViewCell>
