@@ -11,7 +11,7 @@
 #import "KTSearchResultsVC.h"
 #import "KTPostCVC.h"
 
-@interface KTViewController : UIViewController <KTDataloaderDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, SearchDelegate, KTPostCVCDelegate>
+@interface KTViewController : UIViewController <KTDataloaderDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, SearchDelegate, KTPostCVCDelegate, UIScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UIImageView *tumblrAvatar;
 @property KTDataLoader *dataLoader;
 @end

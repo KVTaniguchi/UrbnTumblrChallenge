@@ -21,7 +21,7 @@
 #import "KTPostStore.h"
 
 @interface KTViewController (){
-    KTPostCVC *postsCVC;
+ //   KTPostCVC *postsCVC;
 }
 - (IBAction)refreshButtonPressed:(id)sender;
 @property (strong, nonatomic) IBOutlet UIButton *refreshButton;
@@ -31,6 +31,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (strong, nonatomic) IBOutlet UIView *searchResultsContainerView;
 @property (strong, nonatomic) KTSearchResultsVC *searchResultsVC;
+@property (strong, nonatomic) KTPostCVC *postsCVC;
 @end
 
 @implementation KTViewController
@@ -53,7 +54,7 @@
 -(void)hitDataLoaderBlogSearch{
     [self hideTargetLabels];
     [[KTPostStore sharedStore]clearAllPosts];
-    [postsCVC.collectionView reloadData];
+    [_postsCVC.collectionView reloadData];
     [_searchResultsContainerView setAlpha:1.0f];
     [_searchResultsContainerView setHidden:NO];
     [_dataLoader grabBlogInfoForUser:_userSearchTextField.text];
@@ -136,19 +137,18 @@
     UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
     flowLayout.minimumLineSpacing = .10;
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    postsCVC = [[self storyboard]instantiateViewControllerWithIdentifier:@"KTPostCVC"];
-    [postsCVC.collectionView setCollectionViewLayout:flowLayout];
-    [postsCVC setDelegate:self];
-    [postsCVC.collectionView setDelegate:self];
-    [postsCVC.collectionView setPagingEnabled:NO];
-    [postsCVC.collectionView setUserInteractionEnabled:YES];
-    [postsCVC.collectionView setDataSource:postsCVC];
-    [postsCVC.collectionView setBackgroundColor:[UIColor yellowColor]];
-    [postsCVC.view setBackgroundColor:[UIColor redColor]];
-    postsCVC.numberOfPostsToShow = [NSNumber numberWithInt:1];
-    [postsCVC.view setFrame:CGRectMake(0, 0, _postCVCContainerView.frame.size.width, _postCVCContainerView.frame.size.height)];
-    [self addChildViewController:postsCVC];
-    [_postCVCContainerView addSubview:postsCVC.view];
+    _postsCVC = [[self storyboard]instantiateViewControllerWithIdentifier:@"KTPostCVC"];
+    [_postsCVC.collectionView setCollectionViewLayout:flowLayout];
+    [_postsCVC setDelegate:self];
+    [_postsCVC.collectionView setDelegate:self];
+    [_postsCVC.collectionView setPagingEnabled:NO];
+    [_postsCVC.collectionView setUserInteractionEnabled:YES];
+    [_postsCVC.collectionView setDataSource:_postsCVC];
+    [_postsCVC.collectionView setBackgroundColor:[UIColor yellowColor]];
+    [_postsCVC.view setBackgroundColor:[UIColor redColor]];
+    [_postsCVC.view setFrame:CGRectMake(0, 0, _postCVCContainerView.frame.size.width, _postCVCContainerView.frame.size.height)];
+    [self addChildViewController:_postsCVC];
+    [_postCVCContainerView addSubview:_postsCVC.view];
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -159,7 +159,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setTargetLabelValues];
         NSLog(@"dataloader posts count: %lu", (unsigned long)_dataLoader.posts.count);
-        [postsCVC.collectionView reloadData];
+        [_postsCVC.collectionView reloadData];
     });
 }
 
@@ -195,10 +195,11 @@
             }];
             [self unhideCollectionView];
             [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
-            [postsCVC.collectionView reloadData];
+            [_postsCVC.collectionView reloadData];
         }
     }];
 }
+
 
 -(void)rebloggerLoad:(NSString *)rebloggerName{
     NSLog(@"from view controller: %@", rebloggerName);
@@ -226,12 +227,33 @@
         });
         
     }];
-    
 }
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    NSIndexPath *indexOfTopItem = [NSIndexPath indexPathForItem:0 inSection:0];
+    NSInteger lastInt = [[[KTPostStore sharedStore]allPosts] count];
+    NSLog(@"last int: %ld", (long)lastInt);
+    
+    __weak typeof (KTPostCVC) *weakCVC = _postsCVC;
+    
+    [_postsCVC.collectionView addBottomInfiniteScrollingWithActionHandler:^{
+        NSLog(@"handle hitting bottom");
+        [weakCVC.collectionView scrollToItemAtIndexPath:indexOfTopItem atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+        [weakCVC.collectionView reloadData];
+    }];
+    
+//    [postsCVC.collectionView addTopInfiniteScrollingWithActionHandler:^{
+//        NSLog(@"handle hitting top");
+//        [postsCVC.collectionView scrollToItemAtIndexPath:indexoOfBottomItem atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+//    }];
+}
+
 
 - (IBAction)refreshButtonPressed:(id)sender {
     [[KTPostStore sharedStore]clearAllPosts];
     [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
-    [postsCVC.collectionView reloadData];
+    [_postsCVC.collectionView reloadData];
 }
+
+
 @end

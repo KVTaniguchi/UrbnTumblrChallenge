@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "KTDataLoader.h"
 #import "KTPostCell.h"
+#import <UIScrollView+infiniteScrolling.h>
+#import <CCInfiniteScrolling/UIScrollView+infiniteScrolling.h>
 
 @protocol KTPostCVCDelegate <NSObject>
 

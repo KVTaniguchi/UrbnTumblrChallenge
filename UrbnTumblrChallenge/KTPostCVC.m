@@ -33,7 +33,6 @@
 
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *post = [[[KTPostStore sharedStore]allPosts]objectAtIndex:indexPath.row];
-    NSLog(@"post: %@", post);
     KTPostCell *postCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"postCell" forIndexPath:indexPath];
     postCell.delegate = self;
     if ([post objectForKey:@"caption"] != nil) {
@@ -96,14 +95,6 @@
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
-}
-
-#pragma mark - Navigation
-
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-
 }
 
 
