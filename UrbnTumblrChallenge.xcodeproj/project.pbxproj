@@ -26,6 +26,7 @@
 		C784F4531961D591004045DC /* KTCollectionViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F4521961D591004045DC /* KTCollectionViewTests.m */; };
 		C797AED1196504E50009FE0F /* KTPostStore.m in Sources */ = {isa = PBXBuildFile; fileRef = C797AED0196504E50009FE0F /* KTPostStore.m */; };
 		C7989F15196456950096B741 /* KTPostCVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C7989F14196456950096B741 /* KTPostCVC.m */; };
+		C798D2E91965DE1C0083B2B1 /* reload-75.png in Resources */ = {isa = PBXBuildFile; fileRef = C798D2E81965DE1C0083B2B1 /* reload-75.png */; };
 		C7AB06991964990B00473E24 /* KTSearchResultsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C7AB06981964990B00473E24 /* KTSearchResultsVC.m */; };
 		D86717A961C441BBA34BF5BD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D6898003DD478C942353C6 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 		C797AED0196504E50009FE0F /* KTPostStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTPostStore.m; sourceTree = "<group>"; };
 		C7989F13196456950096B741 /* KTPostCVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTPostCVC.h; sourceTree = "<group>"; };
 		C7989F14196456950096B741 /* KTPostCVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTPostCVC.m; sourceTree = "<group>"; };
+		C798D2E81965DE1C0083B2B1 /* reload-75.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reload-75.png"; sourceTree = "<group>"; };
 		C7AB06971964990B00473E24 /* KTSearchResultsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTSearchResultsVC.h; sourceTree = "<group>"; };
 		C7AB06981964990B00473E24 /* KTSearchResultsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTSearchResultsVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -156,6 +158,7 @@
 		C784F41F1961C4C7004045DC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C798D2E81965DE1C0083B2B1 /* reload-75.png */,
 				C784F4201961C4C7004045DC /* UrbnTumblrChallenge-Info.plist */,
 				C784F4211961C4C7004045DC /* InfoPlist.strings */,
 				C784F4241961C4C7004045DC /* main.m */,
@@ -273,6 +276,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C798D2E91965DE1C0083B2B1 /* reload-75.png in Resources */,
 				C784F4311961C4C7004045DC /* Images.xcassets in Resources */,
 				C784F4231961C4C7004045DC /* InfoPlist.strings in Resources */,
 				C784F42C1961C4C7004045DC /* Main.storyboard in Resources */,

@@ -86,7 +86,6 @@
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    NSLog(@"post store count: %lu", (unsigned long)[[[KTPostStore sharedStore]allPosts] count]);
     return [[[KTPostStore sharedStore]allPosts] count];
 }
 

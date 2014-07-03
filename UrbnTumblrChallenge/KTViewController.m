@@ -167,11 +167,7 @@
         _blogTitleLabel.text = _dataLoader.blogtitle;
         _userNameLabel.text = _dataLoader.usernameToLoad;
         NSLog(@"dataloader posts count: %lu", (unsigned long)_dataLoader.posts.count);
-        postsCVC.numberOfPostsToShow = [NSNumber numberWithInteger:[_dataLoader.posts count]];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [postsCVC.collectionView reloadData];
-        });
-
+        [postsCVC.collectionView reloadData];
     });
 }
 
@@ -205,5 +201,8 @@
 
 
 - (IBAction)refreshButtonPressed:(id)sender {
+    [[KTPostStore sharedStore]clearAllPosts];
+    [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
+    [postsCVC.collectionView reloadData];
 }
 @end
