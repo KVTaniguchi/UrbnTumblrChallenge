@@ -40,10 +40,23 @@
         NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
         postCell.captionTextView.attributedText = attributedString;
     }
-
+    
+    if ([post objectForKey:@"photos"] != nil) {
+        NSArray *photoContainer = [post objectForKey:@"photos"];
+        NSDictionary *photoInfo = [photoContainer objectAtIndex:0];
+        NSArray *altSizes = [photoInfo objectForKey:@"alt_sizes"];
+        NSDictionary *photo = [altSizes lastObject];
+        NSURL *photoURL = [NSURL URLWithString:[photo objectForKey:@"url"]];
+        postCell.postImagesView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:photoURL]];
+    }
+    
     if ([post objectForKey:@"slug"] != nil) {
         postCell.slugTextView.text = [post objectForKey:@"slug"];
     }
+    if ([post objectForKey:@"reblogged"] != nil) {
+        
+    }
+    
     
     return postCell;
 }
