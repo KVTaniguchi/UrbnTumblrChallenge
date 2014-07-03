@@ -4,7 +4,22 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-RZTransitions.xcscheme</key>
+		<key>Pods-CCInfiniteScrolling.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-DProperty.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-JRSwizzle.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-UIView+TKGeometry.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -16,17 +31,6 @@
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>09294A367C2E4721B5DDC6B8</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>403273E5C27745EDBC4C3F7E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>

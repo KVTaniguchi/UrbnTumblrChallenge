@@ -8,8 +8,8 @@
 
 //DONE  Enter a username or tumblr url to load a user's feed
 //DONE  Display feed items for all posts
-//TODO INFINITE SCROLLING: Feed should be infinitely scrollable collection view supporting a way to refresh
-//If the post originated from another user, I should be able to tap another users avatar/user to transition to that users feed using a custom navigation transition
+//TODO INFINITE SCROLLING: Feed should be infinitely scrollable collection view supporting a way to refresh DONE
+//DONE If the post originated from another user, I should be able to tap another users avatar/user to transition to that users feed using a custom navigation transition
 //DONE Full HTML rendering of posts (without web view)
 //Client side persistence for using core data
 //App should properly update when coming in and out of active states
