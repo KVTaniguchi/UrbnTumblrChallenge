@@ -49,7 +49,6 @@
     [self createSearchReultsVC];
     [self.view addSubview:_searchResultsContainerView];
     [self createCollectionView];
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hitDataLoaderBlogSearch) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
@@ -118,6 +117,8 @@
 
 -(void)unhideSearchResultsViews{
     [_searchResultsVC.viewThisFeedButton setHidden:NO];
+    [_searchResultsVC.myIntroLabel setHidden:YES];
+    [_searchResultsVC.instructionsTextView setHidden:YES];
     [_searchResultsVC.noResultsLabel setHidden:YES];
     [_searchResultsVC.userName setHidden:NO];
     [_searchResultsVC.userAvatarImageView setHidden:NO];
@@ -183,6 +184,9 @@
 }
 
 -(void)pushToCollectionView{
+    if ([_userSearchTextField isFirstResponder]) {
+        [_userSearchTextField resignFirstResponder];
+    }
     [UIView animateWithDuration:0.5f animations:^{
         [_searchResultsContainerView setAlpha:0.0f];
         [_searchResultsContainerView setHidden:YES];

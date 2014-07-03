@@ -23,5 +23,7 @@
 @property (strong, nonatomic) IBOutlet UITextView *descriptionTextView;
 - (IBAction)viewThisFeedButtonPress:(id)sender;
 @property (strong, nonatomic) IBOutlet UILabel *noResultsLabel;
+@property (strong, nonatomic) IBOutlet UITextView *instructionsTextView;
+@property (strong, nonatomic) IBOutlet UITextView *myIntroLabel;
 
 @end

@@ -45,7 +45,11 @@
         NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
         postCell.captionTextView.attributedText = attributedString;
     }
-    
+    if ([post objectForKey:@"body"] != nil) {
+        NSString *body = [NSString stringWithString:[post objectForKey:@"body"]];
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[body dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+        postCell.captionTextView.attributedText = attributedString;
+    }
     if ([post objectForKey:@"photos"] != nil) {
         NSArray *photoContainer = [post objectForKey:@"photos"];
         NSDictionary *photoInfo = [photoContainer objectAtIndex:0];
