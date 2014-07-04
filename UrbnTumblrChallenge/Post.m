@@ -2,7 +2,7 @@
 //  Post.m
 //  UrbnTumblrChallenge
 //
-//  Created by Kevin Taniguchi on 7/3/14.
+//  Created by Kevin Taniguchi on 7/4/14.
 //  Copyright (c) 2014 Taniguchi. All rights reserved.
 //
 
@@ -11,12 +11,12 @@
 
 @implementation Post
 
-@dynamic slug;
-@dynamic caption;
 @dynamic body;
+@dynamic caption;
 @dynamic image;
-@dynamic userName;
 @dynamic rebloggerName;
+@dynamic slug;
+@dynamic userName;
 @dynamic user;
 
 @end

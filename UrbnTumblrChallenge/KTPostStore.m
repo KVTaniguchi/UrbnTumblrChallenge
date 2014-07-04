@@ -54,6 +54,33 @@
 
 -(NSArray*)setPosts:(id)post{
     [allPosts addObject:post];
+    
+    Post *p = [self addNewPost];
+    
+   if ([post objectForKey:@"caption"] != nil) {
+        NSString *caption = [NSString stringWithString:[post objectForKey:@"caption"]];
+       p.caption = caption;
+    }
+    if ([post objectForKey:@"body"] != nil) {
+        NSString *body = [NSString stringWithString:[post objectForKey:@"body"]];
+        p.body = body;
+    }
+    if ([post objectForKey:@"photos"] != nil) {
+        NSArray *photoContainer = [post objectForKey:@"photos"];
+        NSDictionary *photoInfo = [photoContainer objectAtIndex:0];
+        NSArray *altSizes = [photoInfo objectForKey:@"alt_sizes"];
+        NSDictionary *photo = [altSizes lastObject];
+        NSURL *photoURL = [NSURL URLWithString:[photo objectForKey:@"url"]];
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:photoURL]];
+        p.image = UIImagePNGRepresentation(image);
+    }
+    if ([post objectForKey:@"slug"] != nil) {
+        p.slug = [post objectForKey:@"slug"];
+    }
+    if ([post objectForKey:@"reblogged_from_name"] != nil) {
+        NSString *reblogger = [post objectForKey:@"reblogged_from_name"];
+        p.rebloggerName = reblogger;
+    }
     return allPosts;
 }
 
