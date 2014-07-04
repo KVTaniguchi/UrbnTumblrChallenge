@@ -75,7 +75,6 @@
     [downloadTask resume];
 }
 
-
 -(void)grabBlogAvatarForUser:(NSString*)userName{
     NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/avatar/info?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG", userName];
     NSURL *url = [NSURL URLWithString:link];

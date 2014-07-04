@@ -7,14 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Post.h"
+@import CoreData;
 
 @interface KTPostStore : NSObject
 {
     NSMutableArray *allPosts;
+    NSManagedObjectModel *model;
 }
-
 +(KTPostStore*)sharedStore;
 -(NSArray*)allPosts;
 -(NSArray*)setPosts:(NSArray*)posts;
+-(Post*)addNewPost;
 -(void)clearAllPosts;
+-(BOOL)saveChanges;
+-(NSArray*)fetchAllPostsForUser:(NSString*)user;
+@property (nonatomic,strong) NSManagedObjectContext *context;
 @end
