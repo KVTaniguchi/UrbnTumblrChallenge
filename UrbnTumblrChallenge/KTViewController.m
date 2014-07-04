@@ -189,18 +189,33 @@
     if ([_userSearchTextField isFirstResponder]) {
         [_userSearchTextField resignFirstResponder];
     }
-    [UIView animateWithDuration:0.5f animations:^{
+    [UIView animateWithDuration:1.0f animations:^{
         [_searchResultsContainerView setAlpha:0.0f];
         [_searchResultsContainerView setHidden:YES];
     } completion:^(BOOL finished) {
         if (finished) {
-            [UIView animateWithDuration:.5 animations:^{
+            UIView *transitionSliderView = [[UIView alloc]initWithFrame:CGRectMake(-320, 0, 320, 568)];
+            transitionSliderView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:134.0f/255.0f blue:232.0f/255.0f alpha:1.0];
+            [self.view addSubview:transitionSliderView];
+            [UIView animateWithDuration:1.0f animations:^{
+                [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
+                [postsCVC.collectionView reloadData];
+                [self unhideCollectionView];
                 [_postCVCContainerView setAlpha:1.0];
-                [self showTargetLabels];
+                transitionSliderView.frame = CGRectMake(0, 0, 320, 568);
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    [UIView animateWithDuration:4.0 animations:^{
+                        transitionSliderView.alpha = 0.0f;
+                    } completion:^(BOOL finished) {
+                        if (finished) {
+                            [UIView animateWithDuration:.1 animations:^{
+                                [self showTargetLabels];
+                            }];
+                        }
+                    }];
+                }
             }];
-            [self unhideCollectionView];
-            [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
-            [postsCVC.collectionView reloadData];
         }
     }];
 }
@@ -208,16 +223,15 @@
 
 -(void)rebloggerLoad:(NSString *)rebloggerName{
     _userSearchTextField.text = rebloggerName;
-    // display custom view with animation simulating a traditional nav controller push
     UIView *fakeTransition = [[UIView alloc]initWithFrame:CGRectMake(320, 0, 320, 568)];
     fakeTransition.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:229.0f/255.0f blue:74.0f/255.0f alpha:1.0];
     [self.view addSubview:fakeTransition];
+    [_dataLoader grabBlogInfoForUser:rebloggerName];
+    [[KTPostStore sharedStore]clearAllPosts];
+    [_dataLoader getPostsForUser:rebloggerName];
     [UIView animateWithDuration:1.0 animations:^{
         fakeTransition.frame = CGRectMake(0, 0, 320, 568);
     } completion:^(BOOL finished) {
-        [_dataLoader grabBlogInfoForUser:rebloggerName];
-        [[KTPostStore sharedStore]clearAllPosts];
-        [_dataLoader getPostsForUser:rebloggerName];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if (finished) {
                 [UIView animateWithDuration:1.0 animations:^{
