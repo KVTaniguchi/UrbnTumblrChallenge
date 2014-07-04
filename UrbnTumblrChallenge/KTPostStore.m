@@ -27,19 +27,25 @@
     if (self) {
         allPosts = [NSMutableArray new];
         model = [NSManagedObjectModel mergedModelFromBundles:nil];
-        NSURL *documentsDirectory = [[[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]lastObject];
-        NSURL *storeURL = [documentsDirectory URLByAppendingPathComponent:@"CoreData.sqlite"];
-        NSError *error = nil;
         NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc]initWithManagedObjectModel:model];
-        NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES, NSInferMappingModelAutomaticallyOption: @YES, @"TaniguchiTumblr": NSPersistentStoreUbiquitousContentNameKey};
-        if (![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
-            [NSException raise:@"Open failed" format:@"Reason: %@", [error localizedDescription]];
+        NSString *path = [self itemArchivePath];
+        NSURL *storeURL = [NSURL fileURLWithPath:path];
+        NSError *error = nil;
+        NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES, NSInferMappingModelAutomaticallyOption: @YES};
+        if(![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]){
+            [NSException raise:@"Open failed" format:@"Reason is %@", [error localizedDescription]];
         }
-        self.context =[NSManagedObjectContext new];
+        self.context = [[NSManagedObjectContext alloc]init];
         [self.context setPersistentStoreCoordinator:psc];
         [self.context setUndoManager:nil];
     }
     return self;
+}
+
+-(NSString*)itemArchivePath{
+    NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = documentDirectories[0];
+    return [documentDirectory stringByAppendingString:@"post.data"];
 }
 
 -(NSArray*)allPosts{
@@ -48,6 +54,33 @@
 
 -(NSArray*)setPosts:(id)post{
     [allPosts addObject:post];
+    
+    Post *p = [self addNewPost];
+    
+   if ([post objectForKey:@"caption"] != nil) {
+        NSString *caption = [NSString stringWithString:[post objectForKey:@"caption"]];
+       p.caption = caption;
+    }
+    if ([post objectForKey:@"body"] != nil) {
+        NSString *body = [NSString stringWithString:[post objectForKey:@"body"]];
+        p.body = body;
+    }
+    if ([post objectForKey:@"photos"] != nil) {
+        NSArray *photoContainer = [post objectForKey:@"photos"];
+        NSDictionary *photoInfo = [photoContainer objectAtIndex:0];
+        NSArray *altSizes = [photoInfo objectForKey:@"alt_sizes"];
+        NSDictionary *photo = [altSizes lastObject];
+        NSURL *photoURL = [NSURL URLWithString:[photo objectForKey:@"url"]];
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:photoURL]];
+        p.image = UIImagePNGRepresentation(image);
+    }
+    if ([post objectForKey:@"slug"] != nil) {
+        p.slug = [post objectForKey:@"slug"];
+    }
+    if ([post objectForKey:@"reblogged_from_name"] != nil) {
+        NSString *reblogger = [post objectForKey:@"reblogged_from_name"];
+        p.rebloggerName = reblogger;
+    }
     return allPosts;
 }
 

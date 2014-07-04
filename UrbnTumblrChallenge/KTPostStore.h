@@ -16,8 +16,9 @@
     NSManagedObjectModel *model;
 }
 +(KTPostStore*)sharedStore;
+-(NSString*)itemArchivePath;
 -(NSArray*)allPosts;
--(NSArray*)setPosts:(NSArray*)posts;
+-(NSArray*)setPosts:(id)post;
 -(Post*)addNewPost;
 -(void)clearAllPosts;
 -(BOOL)saveChanges;
