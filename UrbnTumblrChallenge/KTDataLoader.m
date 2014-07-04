@@ -60,6 +60,7 @@
             }
         }else{
             NSLog(@"no response with response %@", response.description);
+            [[self delegate] searchReturnedNoResults];
         }
     }];
     [dataTask resume];

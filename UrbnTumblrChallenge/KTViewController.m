@@ -69,7 +69,12 @@
 }
 
 -(void)searchReturnedNoResults{
-    [self hideSearchResultsViews];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self hideSearchResultsViews];
+        [self hideTargetLabels];
+        [_searchResultsVC.noResultsLabel setHidden:NO];
+        _searchResultsVC.noResultsLabel.text = @"No Results";
+    });
 }
 
 -(void)setSearchResultsVCBlogTitle:(NSString *)blogTitle userName:(NSString *)userName description:(NSString *)description{
