@@ -22,9 +22,8 @@
 		C784F43A1961C4C7004045DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C784F41C1961C4C7004045DC /* UIKit.framework */; };
 		C784F4421961C4C7004045DC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C784F4401961C4C7004045DC /* InfoPlist.strings */; };
 		C784F44F1961C6D1004045DC /* KTDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F44E1961C6D1004045DC /* KTDataLoader.m */; };
-		C784F4511961D578004045DC /* KTBlogInfoTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F4501961D578004045DC /* KTBlogInfoTest.m */; };
-		C784F4531961D591004045DC /* KTCollectionViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C784F4521961D591004045DC /* KTCollectionViewTests.m */; };
 		C797AED1196504E50009FE0F /* KTPostStore.m in Sources */ = {isa = PBXBuildFile; fileRef = C797AED0196504E50009FE0F /* KTPostStore.m */; };
+		C7985D391967063C0056F0A1 /* KTStoreTester.m in Sources */ = {isa = PBXBuildFile; fileRef = C7985D381967063C0056F0A1 /* KTStoreTester.m */; };
 		C7989F15196456950096B741 /* KTPostCVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C7989F14196456950096B741 /* KTPostCVC.m */; };
 		C798D2E91965DE1C0083B2B1 /* reload-75.png in Resources */ = {isa = PBXBuildFile; fileRef = C798D2E81965DE1C0083B2B1 /* reload-75.png */; };
 		C798D2EC196655B20083B2B1 /* PostModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C798D2EA196655B20083B2B1 /* PostModel.xcdatamodeld */; };
@@ -68,10 +67,9 @@
 		C784F4411961C4C7004045DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C784F44D1961C6D1004045DC /* KTDataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTDataLoader.h; sourceTree = "<group>"; };
 		C784F44E1961C6D1004045DC /* KTDataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTDataLoader.m; sourceTree = "<group>"; };
-		C784F4501961D578004045DC /* KTBlogInfoTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTBlogInfoTest.m; sourceTree = "<group>"; };
-		C784F4521961D591004045DC /* KTCollectionViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTCollectionViewTests.m; sourceTree = "<group>"; };
 		C797AECF196504E50009FE0F /* KTPostStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTPostStore.h; sourceTree = "<group>"; };
 		C797AED0196504E50009FE0F /* KTPostStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTPostStore.m; sourceTree = "<group>"; };
+		C7985D381967063C0056F0A1 /* KTStoreTester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTStoreTester.m; sourceTree = "<group>"; };
 		C7989F13196456950096B741 /* KTPostCVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTPostCVC.h; sourceTree = "<group>"; };
 		C7989F14196456950096B741 /* KTPostCVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTPostCVC.m; sourceTree = "<group>"; };
 		C798D2E81965DE1C0083B2B1 /* reload-75.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reload-75.png"; sourceTree = "<group>"; };
@@ -179,9 +177,8 @@
 		C784F43D1961C4C7004045DC /* UrbnTumblrChallengeTests */ = {
 			isa = PBXGroup;
 			children = (
-				C784F4501961D578004045DC /* KTBlogInfoTest.m */,
-				C784F4521961D591004045DC /* KTCollectionViewTests.m */,
 				C784F43E1961C4C7004045DC /* Supporting Files */,
+				C7985D381967063C0056F0A1 /* KTStoreTester.m */,
 			);
 			path = UrbnTumblrChallengeTests;
 			sourceTree = "<group>";
@@ -357,8 +354,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C784F4511961D578004045DC /* KTBlogInfoTest.m in Sources */,
-				C784F4531961D591004045DC /* KTCollectionViewTests.m in Sources */,
+				C7985D391967063C0056F0A1 /* KTStoreTester.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

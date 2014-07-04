@@ -1,18 +1,20 @@
 //
-//  KTBlogInfoTest.m
+//  KTStoreTester.m
 //  UrbnTumblrChallenge
 //
-//  Created by Kevin Taniguchi on 6/30/14.
+//  Created by Kevin Taniguchi on 7/4/14.
 //  Copyright (c) 2014 Taniguchi. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
+#import "KTPostStore.h"
+#import "Post.h"
 
-@interface KTBlogInfoTest : XCTestCase
+@interface KTStoreTester : XCTestCase
 
 @end
 
-@implementation KTBlogInfoTest
+@implementation KTStoreTester
 
 - (void)setUp
 {
@@ -26,5 +28,10 @@
     [super tearDown];
 }
 
+- (void)testExample
+{
+    Post *testPost = [[KTPostStore sharedStore]addNewPost];
+    XCTAssertNotNil(testPost, @"test post made");
+}
 
 @end
