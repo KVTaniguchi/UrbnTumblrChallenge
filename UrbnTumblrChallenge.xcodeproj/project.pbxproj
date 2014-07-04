@@ -27,6 +27,7 @@
 		C797AED1196504E50009FE0F /* KTPostStore.m in Sources */ = {isa = PBXBuildFile; fileRef = C797AED0196504E50009FE0F /* KTPostStore.m */; };
 		C7989F15196456950096B741 /* KTPostCVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C7989F14196456950096B741 /* KTPostCVC.m */; };
 		C798D2E91965DE1C0083B2B1 /* reload-75.png in Resources */ = {isa = PBXBuildFile; fileRef = C798D2E81965DE1C0083B2B1 /* reload-75.png */; };
+		C798D2EC196655B20083B2B1 /* PostModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C798D2EA196655B20083B2B1 /* PostModel.xcdatamodeld */; };
 		C7AB06991964990B00473E24 /* KTSearchResultsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C7AB06981964990B00473E24 /* KTSearchResultsVC.m */; };
 		D86717A961C441BBA34BF5BD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D6898003DD478C942353C6 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,7 @@
 		C7989F13196456950096B741 /* KTPostCVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTPostCVC.h; sourceTree = "<group>"; };
 		C7989F14196456950096B741 /* KTPostCVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTPostCVC.m; sourceTree = "<group>"; };
 		C798D2E81965DE1C0083B2B1 /* reload-75.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reload-75.png"; sourceTree = "<group>"; };
+		C798D2EB196655B20083B2B1 /* PostModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PostModel.xcdatamodel; sourceTree = "<group>"; };
 		C7AB06971964990B00473E24 /* KTSearchResultsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTSearchResultsVC.h; sourceTree = "<group>"; };
 		C7AB06981964990B00473E24 /* KTSearchResultsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTSearchResultsVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -151,6 +153,7 @@
 				C7AB06981964990B00473E24 /* KTSearchResultsVC.m */,
 				C797AECF196504E50009FE0F /* KTPostStore.h */,
 				C797AED0196504E50009FE0F /* KTPostStore.m */,
+				C798D2EA196655B20083B2B1 /* PostModel.xcdatamodeld */,
 			);
 			path = UrbnTumblrChallenge;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				C784F42F1961C4C7004045DC /* KTViewController.m in Sources */,
 				C784F44F1961C6D1004045DC /* KTDataLoader.m in Sources */,
 				C784F4251961C4C7004045DC /* main.m in Sources */,
+				C798D2EC196655B20083B2B1 /* PostModel.xcdatamodeld in Sources */,
 				C784F4291961C4C7004045DC /* KTAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -561,6 +565,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C798D2EA196655B20083B2B1 /* PostModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C798D2EB196655B20083B2B1 /* PostModel.xcdatamodel */,
+			);
+			currentVersion = C798D2EB196655B20083B2B1 /* PostModel.xcdatamodel */;
+			path = PostModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C784F40D1961C4C7004045DC /* Project object */;
 }

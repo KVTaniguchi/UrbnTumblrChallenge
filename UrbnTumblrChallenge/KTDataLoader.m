@@ -32,6 +32,7 @@
 
 @implementation KTDataLoader
 
+
 -(void)makeSession{
     self.config = [NSURLSessionConfiguration defaultSessionConfiguration];
     self.session = [NSURLSession sessionWithConfiguration:self.config];

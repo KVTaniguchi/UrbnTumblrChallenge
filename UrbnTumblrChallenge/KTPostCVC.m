@@ -85,7 +85,6 @@
 }
 
 -(void)loadReblogger:(NSString *)rebloggerName{
-    NSLog(@"CVC loading reblogger: %@", rebloggerName);
     [[self delegate] rebloggerLoad:rebloggerName];
 }
 
