@@ -20,7 +20,6 @@
 -(NSArray*)allPosts;
 -(NSArray*)setPosts:(id)post;
 -(Post*)addNewPost;
--(NSString*)itemArchivePath;
 -(void)clearAllPosts;
 -(BOOL)saveChanges;
 -(NSArray*)fetchAllPostsForUser:(NSString*)user;

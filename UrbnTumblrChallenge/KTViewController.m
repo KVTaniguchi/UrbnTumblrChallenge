@@ -189,6 +189,7 @@
     if ([_userSearchTextField isFirstResponder]) {
         [_userSearchTextField resignFirstResponder];
     }
+    [_postCVCContainerView setAlpha:0.0];
     [UIView animateWithDuration:1.0f animations:^{
         [_searchResultsContainerView setAlpha:0.0f];
         [_searchResultsContainerView setHidden:YES];
@@ -197,18 +198,19 @@
             UIView *transitionSliderView = [[UIView alloc]initWithFrame:CGRectMake(-320, 0, 320, 568)];
             transitionSliderView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:134.0f/255.0f blue:232.0f/255.0f alpha:1.0];
             [self.view addSubview:transitionSliderView];
-            [UIView animateWithDuration:1.0f animations:^{
+            [UIView animateWithDuration:2.0f animations:^{
                 [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
                 [postsCVC.collectionView reloadData];
                 [self unhideCollectionView];
-                [_postCVCContainerView setAlpha:1.0];
                 transitionSliderView.frame = CGRectMake(0, 0, 320, 568);
             } completion:^(BOOL finished) {
                 if (finished) {
-                    [UIView animateWithDuration:4.0 animations:^{
+                    [UIView animateWithDuration:1.0 animations:^{
+                        [_postCVCContainerView setAlpha:1.0];
                         transitionSliderView.alpha = 0.0f;
                     } completion:^(BOOL finished) {
                         if (finished) {
+                            [transitionSliderView removeFromSuperview];
                             [UIView animateWithDuration:.1 animations:^{
                                 [self showTargetLabels];
                             }];

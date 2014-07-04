@@ -45,7 +45,7 @@
 -(NSString*)itemArchivePath{
     NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES);
     NSString *documentDirectory = documentDirectories[0];
-    return [documentDirectory stringByAppendingString:@"storeStudent.data"];
+    return [documentDirectory stringByAppendingString:@"post.data"];
 }
 
 -(NSArray*)allPosts{
