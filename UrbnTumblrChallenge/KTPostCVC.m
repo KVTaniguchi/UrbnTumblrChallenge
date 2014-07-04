@@ -13,10 +13,10 @@
 @interface KTPostCVC ()
 @property (nonatomic,strong) NSNumber *numberOfItemsToShow;
 @property (nonatomic,strong) KTDataLoader *dataLoader;
+@property (nonatomic) NSArray *postsForUser;
 @end
 
 @implementation KTPostCVC
-
 
 - (void)viewDidLoad
 {
@@ -24,6 +24,7 @@
     _dataLoader = [KTDataLoader new];
     [_dataLoader makeSession];
     _dataLoader.delegate = self;
+    _postsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:@"staff"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -32,9 +33,23 @@
 }
 
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *post = [[[KTPostStore sharedStore]allPosts]objectAtIndex:indexPath.row];
+    // TO DO: redo all post loading from core data
+    
     KTPostCell *postCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"postCell" forIndexPath:indexPath];
     postCell.delegate = self;
+    NSDictionary *post = [[[KTPostStore sharedStore]allPosts]objectAtIndex:indexPath.row];
+    
+//    if (cellPost.caption) {
+//        NSString *caption = cellPost.caption;
+//        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+//        postCell.captionTextView.attributedText = attributedString;
+//    }else{
+//        NSString *body = cellPost.body;
+//        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[body dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+//        postCell.captionTextView.attributedText = attributedString;
+//    }
+//    postCell.slugTextView.text = cellPost.slug;
+    
     if ([post objectForKey:@"caption"] != nil) {
         NSString *caption = [NSString stringWithString:[post objectForKey:@"caption"]];
         NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
