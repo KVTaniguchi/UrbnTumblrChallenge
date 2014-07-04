@@ -28,10 +28,12 @@
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testStoreCanAddNewPost
 {
     Post *testPost = [[KTPostStore sharedStore]addNewPost];
     XCTAssertNotNil(testPost, @"test post made");
 }
+
+
 
 @end
