@@ -24,7 +24,6 @@
     _dataLoader = [KTDataLoader new];
     [_dataLoader makeSession];
     _dataLoader.delegate = self;
-    _postsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:@"staff"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,14 +50,19 @@
 //    postCell.slugTextView.text = cellPost.slug;
     
     if ([post objectForKey:@"caption"] != nil) {
+        
         NSString *caption = [NSString stringWithString:[post objectForKey:@"caption"]];
         NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
         postCell.captionTextView.attributedText = attributedString;
+    }else{
+        NSLog(@"handle no caption");
     }
     if ([post objectForKey:@"body"] != nil) {
         NSString *body = [NSString stringWithString:[post objectForKey:@"body"]];
         NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[body dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
         postCell.captionTextView.attributedText = attributedString;
+    }else if ([post objectForKey:@"caption"] == nil) {
+        NSLog(@"handle no body and no cpation");
     }
     if ([post objectForKey:@"photos"] != nil) {
         NSArray *photoContainer = [post objectForKey:@"photos"];
