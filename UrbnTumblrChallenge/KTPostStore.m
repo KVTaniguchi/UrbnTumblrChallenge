@@ -26,20 +26,26 @@
     self = [super init];
     if (self) {
         allPosts = [NSMutableArray new];
-//        model = [NSManagedObjectModel mergedModelFromBundles:nil];
-//        NSURL *documentsDirectory = [[[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask]lastObject];
-//        NSURL *storeURL = [documentsDirectory URLByAppendingPathComponent:@"CoreData.sqlite"];
-//        NSError *error = nil;
-//        NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc]initWithManagedObjectModel:model];
-//        NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES, NSInferMappingModelAutomaticallyOption: @YES, @"TaniguchiTumblr": NSPersistentStoreUbiquitousContentNameKey};
-//        if (![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
-//            [NSException raise:@"Open failed" format:@"Reason: %@", [error localizedDescription]];
-//        }
-//        self.context =[NSManagedObjectContext new];
-//        [self.context setPersistentStoreCoordinator:psc];
-//        [self.context setUndoManager:nil];
+        model = [NSManagedObjectModel mergedModelFromBundles:nil];
+        NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc]initWithManagedObjectModel:model];
+        NSString *path = [self itemArchivePath];
+        NSURL *storeURL = [NSURL fileURLWithPath:path];
+        NSError *error = nil;
+        NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES, NSInferMappingModelAutomaticallyOption: @YES};
+        if(![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]){
+            [NSException raise:@"Open failed" format:@"Reason is %@", [error localizedDescription]];
+        }
+        self.context = [[NSManagedObjectContext alloc]init];
+        [self.context setPersistentStoreCoordinator:psc];
+        [self.context setUndoManager:nil];
     }
     return self;
+}
+
+-(NSString*)itemArchivePath{
+    NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = documentDirectories[0];
+    return [documentDirectory stringByAppendingString:@"storeStudent.data"];
 }
 
 -(NSArray*)allPosts{
