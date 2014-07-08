@@ -2,7 +2,7 @@
 //  Post.h
 //  UrbnTumblrChallenge
 //
-//  Created by Kevin Taniguchi on 7/4/14.
+//  Created by Kevin Taniguchi on 7/8/14.
 //  Copyright (c) 2014 Taniguchi. All rights reserved.
 //
 
@@ -14,8 +14,10 @@
 
 @property (nonatomic, retain) NSString * body;
 @property (nonatomic, retain) NSString * caption;
+@property (nonatomic, retain) NSDate * date;
 @property (nonatomic, retain) NSData * image;
 @property (nonatomic, retain) NSString * rebloggerName;
+@property (nonatomic, retain) NSNumber * sequence;
 @property (nonatomic, retain) NSString * slug;
 @property (nonatomic, retain) NSString * userName;
 @property (nonatomic, retain) NSManagedObject *user;

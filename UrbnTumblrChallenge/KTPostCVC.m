@@ -82,52 +82,6 @@
         [postCell.rebloggerAvatarImage setHidden:YES];
         [postCell.postImagesView setFrame:CGRectMake(58, 57, 165, 165)];
     }
-    
-    
-//    if ([post objectForKey:@"caption"] != nil) {
-//        NSString *caption = [NSString stringWithString:[post objectForKey:@"caption"]];
-//        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-//        postCell.captionTextView.attributedText = attributedString;
-//    }
-//    else{
-//        NSLog(@"handle no caption");
-//    }
-//    if ([post objectForKey:@"body"] != nil) {
-//        NSString *body = [NSString stringWithString:[post objectForKey:@"body"]];
-//        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[body dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-//        postCell.captionTextView.attributedText = attributedString;
-//    }else if ([post objectForKey:@"caption"] == nil) {
-//        NSLog(@"handle no body and no cpation");
-//    }
-//
-//    if ([post objectForKey:@"slug"] != nil) {
-//        postCell.slugTextView.text = [post objectForKey:@"slug"];
-//    }
-//    if ([post objectForKey:@"reblogged_from_name"] != nil) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [UIView animateWithDuration:1.5 animations:^{
-//                [postCell.postImagesView setFrame:CGRectMake(0, 57, 165, 165)];
-//            } completion:^(BOOL finished) {
-//                [postCell.rebloggedLabel setHidden:NO];
-//                [postCell.rebloggerNameLabel setHidden:NO];
-//                [postCell.rebloggerAvatarImage setHidden:NO];
-//                NSString *reblogger = [post objectForKey:@"reblogged_from_name"];
-//                postCell.rebloggerNameLabel.text = reblogger;
-//                [_dataLoader grabReblogAvatarForUser:reblogger :^(BOOL completed) {
-//                    if (completed) {
-//                        dispatch_async(dispatch_get_main_queue(), ^{
-//                            postCell.rebloggerAvatarImage.image = _dataLoader.downloadedImage;
-//                        });
-//                    }
-//                }];
-//            }];
-//        });
-//    }else{
-//        [postCell.rebloggerNameLabel setHidden:YES];
-//        [postCell.rebloggedLabel setHidden:YES];
-//        [postCell.rebloggerAvatarImage setHidden:YES];
-//        [postCell.postImagesView setFrame:CGRectMake(58, 57, 165, 165)];
-//    }
     return postCell;
 }
 

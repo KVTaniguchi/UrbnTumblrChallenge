@@ -222,7 +222,6 @@
                         transitionSliderView.alpha = 0.0f;
                     } completion:^(BOOL finished) {
                         if (finished) {
-                                            NSLog(@"fetched  postCVC postsfor USER: %@", postsCVC.fetchedPostsForUser.description);
                             [transitionSliderView removeFromSuperview];
                             [UIView animateWithDuration:.1 animations:^{
                                 [self showTargetLabels];

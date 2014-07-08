@@ -52,7 +52,7 @@
     return allPosts;
 }
 
--(NSArray*)setPosts:(id)post{
+-(NSArray*)setPosts:(id)post withSequence:(NSInteger)sequence{
     [allPosts addObject:post];
     
     Post *p = [self addNewPost];
@@ -86,6 +86,9 @@
         NSString *userName = [post objectForKey:@"blog_name"];
         p.userName = userName;
     }
+    
+    p.sequence = [NSNumber numberWithInteger:sequence];
+    
     return allPosts;
 }
 
@@ -115,7 +118,11 @@
     [request setEntity:entity];
     NSError *error = nil;
     NSArray *fetchedPosts = [[KTPostStore sharedStore].context executeFetchRequest:request error:&error];
-    return fetchedPosts;
+    NSMutableArray *orderedPosts = [NSMutableArray arrayWithArray:fetchedPosts];
+    NSSortDescriptor *sequenceSorter = [NSSortDescriptor sortDescriptorWithKey:@"sequence" ascending:YES];
+    [orderedPosts sortUsingDescriptors:@[sequenceSorter]];
+    NSLog(@"ordered posts: %@",orderedPosts.debugDescription);
+    return orderedPosts;
 }
 
 @end
