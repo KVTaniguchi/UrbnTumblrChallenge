@@ -81,14 +81,11 @@
         NSString *reblogger = [post objectForKey:@"reblogged_from_name"];
         p.rebloggerName = reblogger;
     }
-    
     if ([post objectForKey:@"blog_name"] != nil) {
         NSString *userName = [post objectForKey:@"blog_name"];
         p.userName = userName;
     }
-    
     p.sequence = [NSNumber numberWithInteger:sequence];
-    
     return allPosts;
 }
 
