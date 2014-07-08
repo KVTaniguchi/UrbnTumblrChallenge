@@ -212,7 +212,7 @@
             [self.view addSubview:transitionSliderView];
             [UIView animateWithDuration:2.0f animations:^{
                 [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
-                NSLog(@"postCVC postsfor USER: %@", postsCVC.postsForUser.description);
+                NSLog(@"fetched  postCVC postsfor USER: %@", postsCVC.fetchedPostsForUser.description);
                 [postsCVC.collectionView reloadData];
                 [self unhideCollectionView];
                 transitionSliderView.frame = CGRectMake(0, 0, 320, 568);
