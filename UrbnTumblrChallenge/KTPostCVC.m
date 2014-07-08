@@ -13,7 +13,6 @@
 @interface KTPostCVC ()
 @property (nonatomic,strong) NSNumber *numberOfItemsToShow;
 @property (nonatomic,strong) KTDataLoader *dataLoader;
-@property (nonatomic) NSArray *postsForUser;
 @end
 
 @implementation KTPostCVC
@@ -33,14 +32,12 @@
 
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     // TO DO: redo all post loading from core data
-    
-    
-    
-    
-    
+
     KTPostCell *postCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"postCell" forIndexPath:indexPath];
     postCell.delegate = self;
-    NSDictionary *post = [[[KTPostStore sharedStore]allPosts]objectAtIndex:indexPath.row];
+    postCell.layer.shouldRasterize = YES;
+    postCell.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    NSDictionary *post = [[[KTPostStore sharedStore]allPosts]objectAtIndex:indexPath.row]; // this line is slowing it down BAD
     
 //    if (cellPost.caption) {
 //        NSString *caption = cellPost.caption;
@@ -54,7 +51,6 @@
 //    postCell.slugTextView.text = cellPost.slug;
     
     if ([post objectForKey:@"caption"] != nil) {
-        
         NSString *caption = [NSString stringWithString:[post objectForKey:@"caption"]];
         NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
         postCell.captionTextView.attributedText = attributedString;

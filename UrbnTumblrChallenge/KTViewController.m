@@ -172,6 +172,7 @@
 -(void)finishedDownloadingPosts{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setTargetLabelValues];
+        postsCVC.postsForUser = [NSArray arrayWithArray:[[KTPostStore sharedStore]allPosts]];
         [postsCVC.collectionView reloadData];
     });
 }
@@ -208,6 +209,7 @@
             [self.view addSubview:transitionSliderView];
             [UIView animateWithDuration:2.0f animations:^{
                 [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
+                NSLog(@"postCVC postsfor USER: %@", postsCVC.postsForUser.description);
                 [postsCVC.collectionView reloadData];
                 [self unhideCollectionView];
                 transitionSliderView.frame = CGRectMake(0, 0, 320, 568);
