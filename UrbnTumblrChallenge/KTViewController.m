@@ -172,7 +172,10 @@
 -(void)finishedDownloadingPosts{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setTargetLabelValues];
-        postsCVC.postsForUser = [NSArray arrayWithArray:[[KTPostStore sharedStore]allPosts]];
+//        postsCVC.postsForUser = [NSArray arrayWithArray:[[KTPostStore sharedStore]allPosts]];
+        
+        postsCVC.fetchedPostsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:_userSearchTextField.text];
+        
         [postsCVC.collectionView reloadData];
     });
 }

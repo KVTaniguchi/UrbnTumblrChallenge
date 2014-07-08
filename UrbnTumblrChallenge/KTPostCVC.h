@@ -21,5 +21,6 @@
 @interface KTPostCVC : UICollectionViewController <KTDataloaderDelegate, KTPostCellDelegate>
 @property (nonatomic,strong) id<KTPostCVCDelegate>delegate;
 @property (nonatomic,strong) NSNumber *numberOfPostsToShow;
-@property (nonatomic) NSArray *postsForUser;
+@property (nonatomic, strong) NSArray *postsForUser;
+@property (nonatomic, strong) NSArray *fetchedPostsForUser;
 @end
