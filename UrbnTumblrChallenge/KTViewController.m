@@ -238,12 +238,21 @@
     [self.view addSubview:fakeTransition];
     [_dataLoader grabBlogInfoForUser:rebloggerName];
     [[KTPostStore sharedStore]clearAllPosts];
+    //
+    // kick off frontloader -> frontloader
+    // track download progress
+    // add a progress indicator to the view
+    // [fakeTransition addSubView:progressView];
     [_dataLoader getPostsForUser:rebloggerName];
+    //
     [UIView animateWithDuration:1.0 animations:^{
         fakeTransition.frame = CGRectMake(0, 0, 320, 568);
     } completion:^(BOOL finished) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if (finished) {
+                
+                // if the download progress is complete then fade the cover view
+                
                 [UIView animateWithDuration:1.0 animations:^{
                     fakeTransition.alpha = 0.0f;
                 } completion:^(BOOL finished) {

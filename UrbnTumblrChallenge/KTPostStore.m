@@ -57,7 +57,7 @@
     
     Post *p = [self addNewPost];
     
-   if ([post objectForKey:@"caption"] != nil) {
+    if ([post objectForKey:@"caption"] != nil) {
         NSString *caption = [NSString stringWithString:[post objectForKey:@"caption"]];
        p.caption = caption;
     }
@@ -80,6 +80,11 @@
     if ([post objectForKey:@"reblogged_from_name"] != nil) {
         NSString *reblogger = [post objectForKey:@"reblogged_from_name"];
         p.rebloggerName = reblogger;
+    }
+    
+    if ([post objectForKey:@"blog_name"] != nil) {
+        NSString *userName = [post objectForKey:@"blog_name"];
+        p.userName = userName;
     }
     return allPosts;
 }
