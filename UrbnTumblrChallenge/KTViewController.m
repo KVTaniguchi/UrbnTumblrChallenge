@@ -172,7 +172,6 @@
 -(void)finishedDownloadingPosts{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setTargetLabelValues];
-//        postsCVC.postsForUser = [NSArray arrayWithArray:[[KTPostStore sharedStore]allPosts]];
         
         postsCVC.fetchedPostsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:_userSearchTextField.text];
         
@@ -201,6 +200,7 @@
     if ([_userSearchTextField isFirstResponder]) {
         [_userSearchTextField resignFirstResponder];
     }
+    [[KTPostStore sharedStore]deleteAllPostsForUser:_dataLoader.usernameToLoad];
     [_postCVCContainerView setAlpha:0.0];
     [UIView animateWithDuration:1.0f animations:^{
         [_searchResultsContainerView setAlpha:0.0f];
@@ -292,7 +292,8 @@
 
 - (IBAction)refreshButtonPressed:(id)sender {
     [[KTPostStore sharedStore]clearAllPosts];
-    [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
+    [[KTPostStore sharedStore]deleteAllPostsForUser:_dataLoader.usernameToLoad];
+    [self pushToCollectionView];
     [postsCVC.collectionView reloadData];
 }
 

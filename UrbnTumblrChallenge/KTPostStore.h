@@ -23,5 +23,6 @@
 -(void)clearAllPosts;
 -(BOOL)saveChanges;
 -(NSArray*)fetchAllPostsForUser:(NSString*)user;
+-(void)deleteAllPostsForUser:(NSString*)user;
 @property (nonatomic,strong) NSManagedObjectContext *context;
 @end
