@@ -37,11 +37,6 @@
     postCell.delegate = self;
     postCell.postImagesView.layer.shouldRasterize = YES;
     postCell.postImagesView.layer.rasterizationScale = [UIScreen mainScreen].scale;
-//    NSDictionary *post = [[[KTPostStore sharedStore]allPosts]objectAtIndex:indexPath.row]; // this line is slowing it down BAD
-    
-    NSDictionary *post = [self.postsForUser objectAtIndex:indexPath.row];
-    
-
     Post *fetchedPost = [self.fetchedPostsForUser objectAtIndex:indexPath.row];
     
     if (fetchedPost.caption != nil) {

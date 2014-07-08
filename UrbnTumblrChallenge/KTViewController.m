@@ -212,7 +212,6 @@
             [self.view addSubview:transitionSliderView];
             [UIView animateWithDuration:2.0f animations:^{
                 [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
-                NSLog(@"fetched  postCVC postsfor USER: %@", postsCVC.fetchedPostsForUser.description);
                 [postsCVC.collectionView reloadData];
                 [self unhideCollectionView];
                 transitionSliderView.frame = CGRectMake(0, 0, 320, 568);
@@ -223,6 +222,7 @@
                         transitionSliderView.alpha = 0.0f;
                     } completion:^(BOOL finished) {
                         if (finished) {
+                                            NSLog(@"fetched  postCVC postsfor USER: %@", postsCVC.fetchedPostsForUser.description);
                             [transitionSliderView removeFromSuperview];
                             [UIView animateWithDuration:.1 animations:^{
                                 [self showTargetLabels];
