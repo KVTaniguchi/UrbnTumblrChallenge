@@ -201,24 +201,26 @@
         [_userSearchTextField resignFirstResponder];
     }
     [[KTPostStore sharedStore]deleteAllPostsForUser:_dataLoader.usernameToLoad];
+    [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
     [_postCVCContainerView setAlpha:0.0];
     [UIView animateWithDuration:1.0f animations:^{
         [_searchResultsContainerView setAlpha:0.0f];
         [_searchResultsContainerView setHidden:YES];
     } completion:^(BOOL finished) {
         if (finished) {
+            _postCVCContainerView.alpha = 0.0f;
             UIView *transitionSliderView = [[UIView alloc]initWithFrame:CGRectMake(-320, 0, 320, 568)];
             transitionSliderView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:134.0f/255.0f blue:232.0f/255.0f alpha:1.0];
             [self.view addSubview:transitionSliderView];
             [UIView animateWithDuration:2.0f animations:^{
-                [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
+
                 [postsCVC.collectionView reloadData];
                 [self unhideCollectionView];
                 transitionSliderView.frame = CGRectMake(0, 0, 320, 568);
             } completion:^(BOOL finished) {
                 if (finished) {
-                    [UIView animateWithDuration:1.0 animations:^{
-                        [_postCVCContainerView setAlpha:1.0];
+                    [UIView animateWithDuration:3.0 animations:^{
+                        _postCVCContainerView.alpha = 1.0f;
                         transitionSliderView.alpha = 0.0f;
                     } completion:^(BOOL finished) {
                         if (finished) {
@@ -252,13 +254,15 @@
     [UIView animateWithDuration:1.0 animations:^{
         fakeTransition.frame = CGRectMake(0, 0, 320, 568);
     } completion:^(BOOL finished) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_postCVCContainerView setAlpha:0.0];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if (finished) {
                 
                 // if the download progress is complete then fade the cover view
                 
                 [UIView animateWithDuration:1.0 animations:^{
                     fakeTransition.alpha = 0.0f;
+                    _postCVCContainerView.alpha = 1.0f;
                 } completion:^(BOOL finished) {
                     if (finished) {
                         [fakeTransition removeFromSuperview];
@@ -275,7 +279,7 @@
 //    NSInteger lastInt = [[[KTPostStore sharedStore]allPosts] count] - 1;
 //    NSIndexPath *indexOfBottomItem = [NSIndexPath indexPathForItem:lastInt inSection:0];
 //    NSLog(@"last int: %ld", (long)lastInt);
-    
+
     __weak typeof (KTPostCVC) *weakCVC = postsCVC;
     [postsCVC.collectionView addBottomInfiniteScrollingWithActionHandler:^{
         [weakCVC.collectionView scrollToItemAtIndexPath:indexOfTopItem atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
