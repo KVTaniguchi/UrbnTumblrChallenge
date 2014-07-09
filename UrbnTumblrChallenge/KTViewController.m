@@ -174,7 +174,7 @@
 -(void)finishedDownloadingPosts{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setTargetLabelValues];
-        NSLog(@"finished download: loading posts for ");
+        NSLog(@"finished download: loading posts for %@", _userSearchTextField.text);
         postsCVC.fetchedPostsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:_userSearchTextField.text];
         [UIView animateWithDuration:1.0 animations:^{
             _fakeTransitionView.alpha = 0.0f;
