@@ -136,7 +136,7 @@
             }
         }
     }
-    
+    [[KTPostStore sharedStore]saveChanges];
 }
 
 @end

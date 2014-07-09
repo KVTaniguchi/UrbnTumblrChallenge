@@ -47,6 +47,8 @@
     if (fetchedPost.image != nil) {
         postCell.postImagesView.image = [UIImage imageWithData:fetchedPost.image];
         postCell.slugTextView.text = fetchedPost.slug;
+    }else{
+        postCell.postImagesView.image = nil;
     }
     if (fetchedPost.body != nil) {
         NSString *caption = fetchedPost.body;

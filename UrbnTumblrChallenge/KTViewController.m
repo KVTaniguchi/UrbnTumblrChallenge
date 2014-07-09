@@ -11,7 +11,7 @@
 //DONE INFINITE SCROLLING: Feed should be infinitely scrollable collection view supporting a way to refresh DONE
 //DONE If the post originated from another user, I should be able to tap another users avatar/user to transition to that users feed using a custom navigation transition
 //DONE Full HTML rendering of posts (without web view)
-//Client side persistence for using core data ??? save what in core data?
+// DONE Client side persistence for using core data ??? save what in core data?
 
 // *** save the currently loaded tumblr feed, clear it with each new search
 
@@ -39,7 +39,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (strong, nonatomic) IBOutlet UIView *searchResultsContainerView;
 @property (strong, nonatomic) KTSearchResultsVC *searchResultsVC;
-@property (nonatomic) UIView *fakeTransitionView;
+@property (strong, nonatomic) UIView *fakeTransitionView;
+@property (strong, nonatomic) MRActivityIndicatorView *progressView;
 @end
 
 @implementation KTViewController
@@ -47,12 +48,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _fakeTransitionView = [[UIView alloc]initWithFrame:CGRectMake(-320, 0, 320, 568)];
-    _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:134.0f/255.0f blue:232.0f/255.0f alpha:1.0];
-    MRActivityIndicatorView *progressView = [[MRActivityIndicatorView alloc]initWithFrame:CGRectMake(110, 160, 100, 100)];
-    [progressView setTintColor:[UIColor whiteColor]];
-    [progressView startAnimating];
-    [_fakeTransitionView addSubview:progressView];
+    [self createTransitionView];
     [self.view addSubview:_fakeTransitionView];
     _dataLoader = [KTDataLoader new];
     _dataLoader.completionDelegate = self;
@@ -172,28 +168,25 @@
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
-    
     return _postCVCContainerView.frame.size;
 }
 
 -(void)finishedDownloadingPosts{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setTargetLabelValues];
-        NSLog(@"finished download");
+        NSLog(@"finished download: loading posts for ");
         postsCVC.fetchedPostsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:_userSearchTextField.text];
         [UIView animateWithDuration:1.0 animations:^{
             _fakeTransitionView.alpha = 0.0f;
-        } completion:^(BOOL finished) {
+        }completion:^(BOOL finished) {
             if (finished) {
-                _fakeTransitionView.frame = CGRectMake(-320, 0, 320, 568);
-                _fakeTransitionView.alpha = 1.0f;
+                [self resetTransitionView];
                 [self.view setNeedsDisplay];
             }
         }];
-
-        [postsCVC.collectionView reloadData];
+        if (postsCVC.fetchedPostsForUser.count > 0) {
+            [postsCVC.collectionView reloadData];
+        }
     });
 }
 
@@ -221,6 +214,21 @@
     }
     [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
     [_postCVCContainerView setAlpha:0.0];
+    [self simulateTransition];
+}
+
+-(void)rebloggerLoad:(NSString *)rebloggerName{
+    _userSearchTextField.text = rebloggerName;
+    _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:229.0f/255.0f blue:74.0f/255.0f alpha:1.0];
+    [self.view addSubview:_fakeTransitionView];
+    [_dataLoader grabBlogInfoForUser:rebloggerName];
+    
+    [[KTPostStore sharedStore]clearAllPosts];
+    [_dataLoader getPostsForUser:rebloggerName];
+    [self simulateTransition];
+}
+
+-(void)simulateTransition{
     [UIView animateWithDuration:1.0f animations:^{
         [_searchResultsContainerView setAlpha:0.0f];
         [_searchResultsContainerView setHidden:YES];
@@ -246,39 +254,19 @@
     }];
 }
 
--(void)rebloggerLoad:(NSString *)rebloggerName{
-    _userSearchTextField.text = rebloggerName;
-    _fakeTransitionView = [[UIView alloc]initWithFrame:CGRectMake(320, 0, 320, 568)];
-    _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:229.0f/255.0f blue:74.0f/255.0f alpha:1.0];
-    [self.view addSubview:_fakeTransitionView];
-    [_dataLoader grabBlogInfoForUser:rebloggerName];
-    [[KTPostStore sharedStore]clearAllPosts];
-    [_dataLoader getPostsForUser:rebloggerName];
-    [UIView animateWithDuration:1.0 animations:^{
-        _fakeTransitionView.frame = CGRectMake(0, 0, 320, 568);
-    } completion:^(BOOL finished) {
-        [_postCVCContainerView setAlpha:0.0];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (finished) {
-                
-                // if the download progress is complete then fade the cover view
-                
-                [UIView animateWithDuration:1.0 animations:^{
-                    _fakeTransitionView.alpha = 0.0f;
-                    _postCVCContainerView.alpha = 1.0f;
-                } completion:^(BOOL finished) {
-                    if (finished) {
-                        [_fakeTransitionView removeFromSuperview];
-                    }
-                }];
-            }
-        });
-        
-    }];
+-(void)resetTransitionView{
+    _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:134.0f/255.0f blue:232.0f/255.0f alpha:1.0];
+    _fakeTransitionView.frame = CGRectMake(-320, 0, 320, 568);
+    _fakeTransitionView.alpha = 1.0f;
 }
 
--(void)animateCollectionViewAppearance{
-    
+-(void)createTransitionView{
+    _fakeTransitionView = [[UIView alloc]initWithFrame:CGRectMake(-320, 0, 320, 568)];
+    _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:134.0f/255.0f blue:232.0f/255.0f alpha:1.0];
+    _progressView = [[MRActivityIndicatorView alloc]initWithFrame:CGRectMake(110, 160, 100, 100)];
+    [_progressView setTintColor:[UIColor whiteColor]];
+    [_progressView startAnimating];
+    [_fakeTransitionView addSubview:_progressView];
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -304,9 +292,9 @@
 - (IBAction)refreshButtonPressed:(id)sender {
     [[KTPostStore sharedStore]clearAllPosts];
     [[KTPostStore sharedStore]deleteAllPostsForUser:_dataLoader.usernameToLoad];
+    NSLog(@"user being cleared is: %@", _dataLoader.usernameToLoad);
     [self pushToCollectionView];
     [postsCVC.collectionView reloadData];
 }
-
 
 @end
