@@ -139,4 +139,17 @@
     [[KTPostStore sharedStore]saveChanges];
 }
 
+-(BOOL)storeHasPostsForUser:(NSString*)user{
+    NSFetchRequest *request = [NSFetchRequest new];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:self.context];
+    NSPredicate *userNamePredicate = [NSPredicate predicateWithFormat:@"userName = %@", user];
+    [request setPredicate:userNamePredicate];
+    [request setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedPosts = [[KTPostStore sharedStore].context executeFetchRequest:request error:&error];
+    if (fetchedPosts.count > 0) {
+        return YES;
+    }else return NO;
+}
+
 @end

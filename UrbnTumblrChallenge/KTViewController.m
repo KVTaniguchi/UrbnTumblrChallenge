@@ -212,7 +212,13 @@
     if ([_userSearchTextField isFirstResponder]) {
         [_userSearchTextField resignFirstResponder];
     }
-    [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
+    if ([[KTPostStore sharedStore]storeHasPostsForUser:_dataLoader.usernameToLoad] == YES) {
+        NSLog(@"store has loaded this user before");
+        [self.refreshButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }else{
+        NSLog(@"store had not loaded this user before");
+        [_dataLoader getPostsForUser:_userSearchTextField.text];
+    }
     [_postCVCContainerView setAlpha:0.0];
     [self simulateTransition];
 }
@@ -220,12 +226,9 @@
 -(void)rebloggerLoad:(NSString *)rebloggerName{
     _userSearchTextField.text = rebloggerName;
     _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:229.0f/255.0f blue:74.0f/255.0f alpha:1.0];
-    [self.view addSubview:_fakeTransitionView];
     [_dataLoader grabBlogInfoForUser:rebloggerName];
-    
     [[KTPostStore sharedStore]clearAllPosts];
-    [_dataLoader getPostsForUser:rebloggerName];
-    [self simulateTransition];
+    [self pushToCollectionView];
 }
 
 -(void)simulateTransition{
@@ -294,7 +297,6 @@
     [[KTPostStore sharedStore]deleteAllPostsForUser:_dataLoader.usernameToLoad];
     NSLog(@"user being cleared is: %@", _dataLoader.usernameToLoad);
     [self pushToCollectionView];
-    [postsCVC.collectionView reloadData];
 }
 
 @end
