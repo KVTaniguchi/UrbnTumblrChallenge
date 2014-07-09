@@ -64,7 +64,6 @@
 }
 
 -(void)hitDataLoaderBlogSearch{
-    [[KTPostStore sharedStore]deleteAllPostsForUser:_dataLoader.usernameToLoad];
     [self hideTargetLabels];
     [[KTPostStore sharedStore]clearAllPosts];
     [postsCVC.collectionView reloadData];
@@ -213,15 +212,6 @@
     if ([_userSearchTextField isFirstResponder]) {
         [_userSearchTextField resignFirstResponder];
     }
-//    if ([[KTPostStore sharedStore]storeHasPostsForUser:_dataLoader.usernameToLoad] == YES) {
-//        NSLog(@"store has loaded this user before");
-//        [self.refreshButton sendActionsForControlEvents:UIControlEventTouchUpInside];
-//    }else{
-//        NSLog(@"store had not loaded this user before");
-//        [_dataLoader getPostsForUser:_userSearchTextField.text];
-//    }
-    // write a method for clearing out posts with identical ids
-    
     [_dataLoader getPostsForUser:_userSearchTextField.text];
     [_postCVCContainerView setAlpha:0.0];
     [self simulateTransition];
@@ -297,9 +287,7 @@
 
 
 - (IBAction)refreshButtonPressed:(id)sender {
-    [[KTPostStore sharedStore]clearAllPosts];
-    [[KTPostStore sharedStore]deleteAllPostsForUser:_userSearchTextField.text];
-    NSLog(@"user being cleared is: %@", _userSearchTextField.text);
+    NSLog(@"user being refreshed is: %@", _userSearchTextField.text);
     [self pushToCollectionView];
 }
 

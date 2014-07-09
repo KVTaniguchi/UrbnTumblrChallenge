@@ -28,7 +28,7 @@
 		C798D2E91965DE1C0083B2B1 /* reload-75.png in Resources */ = {isa = PBXBuildFile; fileRef = C798D2E81965DE1C0083B2B1 /* reload-75.png */; };
 		C798D2EC196655B20083B2B1 /* PostModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C798D2EA196655B20083B2B1 /* PostModel.xcdatamodeld */; };
 		C7AB06991964990B00473E24 /* KTSearchResultsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C7AB06981964990B00473E24 /* KTSearchResultsVC.m */; };
-		C7FF388E196C9D5F00524D22 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = C7FF388D196C9D5F00524D22 /* Post.m */; };
+		C7CB6210196DF9F40082E57F /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = C7CB620F196DF9F40082E57F /* Post.m */; };
 		D86717A961C441BBA34BF5BD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D6898003DD478C942353C6 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -77,10 +77,11 @@
 		C798D2F41966768A0083B2B1 /* PostModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PostModel 2.xcdatamodel"; sourceTree = "<group>"; };
 		C7AB06971964990B00473E24 /* KTSearchResultsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTSearchResultsVC.h; sourceTree = "<group>"; };
 		C7AB06981964990B00473E24 /* KTSearchResultsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTSearchResultsVC.m; sourceTree = "<group>"; };
+		C7CB620D196DF9C80082E57F /* PostModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PostModel 5.xcdatamodel"; sourceTree = "<group>"; };
+		C7CB620E196DF9F40082E57F /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
+		C7CB620F196DF9F40082E57F /* Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Post.m; sourceTree = "<group>"; };
 		C7FF388A196C9CE300524D22 /* PostModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PostModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		C7FF388B196C9D2000524D22 /* PostModel 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PostModel 4.xcdatamodel"; sourceTree = "<group>"; };
-		C7FF388C196C9D5F00524D22 /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
-		C7FF388D196C9D5F00524D22 /* Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Post.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,9 +158,9 @@
 				C7AB06981964990B00473E24 /* KTSearchResultsVC.m */,
 				C797AECF196504E50009FE0F /* KTPostStore.h */,
 				C797AED0196504E50009FE0F /* KTPostStore.m */,
-				C7FF388C196C9D5F00524D22 /* Post.h */,
-				C7FF388D196C9D5F00524D22 /* Post.m */,
 				C798D2EA196655B20083B2B1 /* PostModel.xcdatamodeld */,
+				C7CB620E196DF9F40082E57F /* Post.h */,
+				C7CB620F196DF9F40082E57F /* Post.m */,
 			);
 			path = UrbnTumblrChallenge;
 			sourceTree = "<group>";
@@ -344,7 +345,7 @@
 				C797AED1196504E50009FE0F /* KTPostStore.m in Sources */,
 				C7989F15196456950096B741 /* KTPostCVC.m in Sources */,
 				C784F42F1961C4C7004045DC /* KTViewController.m in Sources */,
-				C7FF388E196C9D5F00524D22 /* Post.m in Sources */,
+				C7CB6210196DF9F40082E57F /* Post.m in Sources */,
 				C784F44F1961C6D1004045DC /* KTDataLoader.m in Sources */,
 				C784F4251961C4C7004045DC /* main.m in Sources */,
 				C798D2EC196655B20083B2B1 /* PostModel.xcdatamodeld in Sources */,
@@ -577,10 +578,11 @@
 			children = (
 				C798D2F41966768A0083B2B1 /* PostModel 2.xcdatamodel */,
 				C7FF388B196C9D2000524D22 /* PostModel 4.xcdatamodel */,
+				C7CB620D196DF9C80082E57F /* PostModel 5.xcdatamodel */,
 				C7FF388A196C9CE300524D22 /* PostModel 3.xcdatamodel */,
 				C798D2EB196655B20083B2B1 /* PostModel.xcdatamodel */,
 			);
-			currentVersion = C7FF388B196C9D2000524D22 /* PostModel 4.xcdatamodel */;
+			currentVersion = C7CB620D196DF9C80082E57F /* PostModel 5.xcdatamodel */;
 			path = PostModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

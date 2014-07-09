@@ -53,9 +53,18 @@
 }
 
 -(NSArray*)setPosts:(id)post withSequence:(NSInteger)sequence{
-    [allPosts addObject:post];
+    // if the store already has a post with this posts ID then return all posts without adding
     
+    NSString *postID = [NSString stringWithFormat:@"%@",[post objectForKey:@"id"]];
+    
+    if ([[KTPostStore sharedStore]storehHasPostWithPostID:postID] == YES) {
+        return allPosts;
+    }
+    // else continue on below
+    [allPosts addObject:post];
     Post *p = [self addNewPost];
+    
+    p.postID = postID;
     
     if ([post objectForKey:@"caption"] != nil) {
         NSString *caption = [NSString stringWithString:[post objectForKey:@"caption"]];
@@ -144,6 +153,19 @@
     NSFetchRequest *request = [NSFetchRequest new];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:self.context];
     NSPredicate *userNamePredicate = [NSPredicate predicateWithFormat:@"userName = %@", user];
+    [request setPredicate:userNamePredicate];
+    [request setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedPosts = [[KTPostStore sharedStore].context executeFetchRequest:request error:&error];
+    if (fetchedPosts.count > 0) {
+        return YES;
+    }else return NO;
+}
+
+-(BOOL)storehHasPostWithPostID:(NSString*)postID{
+    NSFetchRequest *request = [NSFetchRequest new];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:self.context];
+    NSPredicate *userNamePredicate = [NSPredicate predicateWithFormat:@"postID = %@", postID];
     [request setPredicate:userNamePredicate];
     [request setEntity:entity];
     NSError *error = nil;
