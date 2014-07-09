@@ -122,6 +122,7 @@
 }
 
 -(void)deleteAllPostsForUser:(NSString*)user{
+    NSLog(@"deleting posts for: %@", user);
     NSFetchRequest *request = [NSFetchRequest new];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:self.context];
     NSPredicate *userNamePredicate = [NSPredicate predicateWithFormat:@"userName = %@", user];

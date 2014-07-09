@@ -14,4 +14,5 @@
 @interface KTViewController : UIViewController <KTDataloaderDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, SearchDelegate, KTPostCVCDelegate, UIScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UIImageView *tumblrAvatar;
 @property KTDataLoader *dataLoader;
+-(void)refreshCurrentFeed;
 @end

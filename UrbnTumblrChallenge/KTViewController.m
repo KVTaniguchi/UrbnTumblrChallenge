@@ -60,6 +60,7 @@
     [self.view addSubview:_searchResultsContainerView];
     [self createCollectionView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hitDataLoaderBlogSearch) name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshCurrentFeed) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 -(void)hitDataLoaderBlogSearch{
@@ -208,17 +209,20 @@
 }
 
 -(void)pushToCollectionView{
-    [_dataLoader preLoadPostsForUser:_dataLoader.usernameToLoad];
+//    [_dataLoader preLoadPostsForUser:_dataLoader.usernameToLoad];
     if ([_userSearchTextField isFirstResponder]) {
         [_userSearchTextField resignFirstResponder];
     }
-    if ([[KTPostStore sharedStore]storeHasPostsForUser:_dataLoader.usernameToLoad] == YES) {
-        NSLog(@"store has loaded this user before");
-        [self.refreshButton sendActionsForControlEvents:UIControlEventTouchUpInside];
-    }else{
-        NSLog(@"store had not loaded this user before");
-        [_dataLoader getPostsForUser:_userSearchTextField.text];
-    }
+//    if ([[KTPostStore sharedStore]storeHasPostsForUser:_dataLoader.usernameToLoad] == YES) {
+//        NSLog(@"store has loaded this user before");
+//        [self.refreshButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+//    }else{
+//        NSLog(@"store had not loaded this user before");
+//        [_dataLoader getPostsForUser:_userSearchTextField.text];
+//    }
+    // write a method for clearing out posts with identical ids
+    
+    [_dataLoader getPostsForUser:_userSearchTextField.text];
     [_postCVCContainerView setAlpha:0.0];
     [self simulateTransition];
 }
@@ -294,9 +298,15 @@
 
 - (IBAction)refreshButtonPressed:(id)sender {
     [[KTPostStore sharedStore]clearAllPosts];
-    [[KTPostStore sharedStore]deleteAllPostsForUser:_dataLoader.usernameToLoad];
-    NSLog(@"user being cleared is: %@", _dataLoader.usernameToLoad);
+    [[KTPostStore sharedStore]deleteAllPostsForUser:_userSearchTextField.text];
+    NSLog(@"user being cleared is: %@", _userSearchTextField.text);
     [self pushToCollectionView];
+}
+
+-(void)refreshCurrentFeed{
+    if (_userSearchTextField.text.length > 0) {
+        [self pushToCollectionView];
+    }
 }
 
 @end
