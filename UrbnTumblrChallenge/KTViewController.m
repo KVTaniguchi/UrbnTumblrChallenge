@@ -26,6 +26,7 @@
 #import "KTViewController.h"
 #import "KTPostCVC.h"
 #import "KTPostStore.h"
+#import <MRProgress/MRProgress.h>
 
 @interface KTViewController (){
     KTPostCVC *postsCVC;
@@ -48,6 +49,10 @@
     [super viewDidLoad];
     _fakeTransitionView = [[UIView alloc]initWithFrame:CGRectMake(-320, 0, 320, 568)];
     _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:134.0f/255.0f blue:232.0f/255.0f alpha:1.0];
+    MRActivityIndicatorView *progressView = [[MRActivityIndicatorView alloc]initWithFrame:CGRectMake(110, 160, 100, 100)];
+    [progressView setTintColor:[UIColor whiteColor]];
+    [progressView startAnimating];
+    [_fakeTransitionView addSubview:progressView];
     [self.view addSubview:_fakeTransitionView];
     _dataLoader = [KTDataLoader new];
     _dataLoader.completionDelegate = self;
