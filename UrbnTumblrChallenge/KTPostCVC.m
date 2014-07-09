@@ -38,7 +38,7 @@
     postCell.postImagesView.layer.shouldRasterize = YES;
     postCell.postImagesView.layer.rasterizationScale = [UIScreen mainScreen].scale;
     Post *fetchedPost = [self.fetchedPostsForUser objectAtIndex:indexPath.row];
-    
+    [postCell.reblogLoadButton setHidden:YES];
     if (fetchedPost.caption != nil) {
         NSString *caption = fetchedPost.caption;
         NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[caption dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
@@ -58,6 +58,7 @@
     }
     if (fetchedPost.rebloggerName != nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
+                [postCell.reblogLoadButton setHidden:NO];
             [UIView animateWithDuration:1.5 animations:^{
                 [postCell.postImagesView setFrame:CGRectMake(0, 57, 165, 165)];
             } completion:^(BOOL finished) {

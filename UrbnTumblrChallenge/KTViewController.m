@@ -67,11 +67,12 @@
 }
 
 -(void)hitDataLoaderBlogSearch{
+    [[KTPostStore sharedStore]deleteAllPostsForUser:_dataLoader.usernameToLoad];
     [self hideTargetLabels];
     [[KTPostStore sharedStore]clearAllPosts];
     [postsCVC.collectionView reloadData];
     [_searchResultsContainerView setAlpha:1.0f];
-    [_searchResultsContainerView setHidden:NO];
+     [_searchResultsContainerView setHidden:NO];
     [_dataLoader grabBlogInfoForUser:_userSearchTextField.text];
     [_postCVCContainerView setAlpha:0.0];
 }
@@ -218,7 +219,6 @@
     if ([_userSearchTextField isFirstResponder]) {
         [_userSearchTextField resignFirstResponder];
     }
-    [[KTPostStore sharedStore]deleteAllPostsForUser:_dataLoader.usernameToLoad];
     [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
     [_postCVCContainerView setAlpha:0.0];
     [UIView animateWithDuration:1.0f animations:^{
