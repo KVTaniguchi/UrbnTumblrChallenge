@@ -18,8 +18,6 @@
 //Use of animations are encouraged
 //All code should be in Github
 
-// OAuth Consumer Key:
-
 #import "KTDataLoader.h"
 #import "KTPostStore.h"
 
@@ -27,7 +25,7 @@
 
 @property (nonatomic, strong) NSURLSession *session;
 @property (nonatomic, strong) NSURLSessionConfiguration *config;
-
+@property (nonatomic,weak) NSURLSessionDownloadTask *downloadTask;
 @end
 
 @implementation KTDataLoader
@@ -35,30 +33,36 @@
 
 -(void)makeSession{
     self.config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    self.session = [NSURLSession sessionWithConfiguration:self.config];
+    self.session = [NSURLSession sessionWithConfiguration:self.config delegate:self delegateQueue:nil];
     self.downloadedImage = [UIImage new];
 }
 
 
 -(void)preLoadPostsForUser:(NSString*)textFieldEntry{
-    NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/info?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG", textFieldEntry];
+    NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/posts/?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG&reblog_info=true", textFieldEntry];
     NSURL *url = [NSURL URLWithString:link];
-    NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
-        
-    }];
-    [downloadTask resume];
+    _downloadTask = [self.session downloadTaskWithURL:url];
+    [_downloadTask resume];
 }
 
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
+    NSLog(@"did finish");
 }
 
 -(void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session{
+    NSLog(@"did finish events");
 }
 
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes{
+    if (downloadTask == _downloadTask) {
+        NSLog(@"did resume offset");
+    }
 }
 
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
+    if (downloadTask == _downloadTask) {
+        NSLog(@"%f / %f", (double)totalBytesWritten,(double)totalBytesExpectedToWrite);
+    }
 }
 
 -(void)grabBlogInfoForUser:(NSString*)textFieldEntry{
@@ -68,7 +72,7 @@
         if (response) {
             NSHTTPURLResponse *status = (NSHTTPURLResponse*)response;
             if (status.statusCode != 200) {
-                [[self delegate] searchReturnedNoResults];
+                [[self completionDelegate] searchReturnedNoResults];
             }else if (status.statusCode == 200){
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -77,12 +81,12 @@
                     self.blogtitle = [blog objectForKey:@"title"];
                     self.usernameToLoad = [blog objectForKey:@"name"];
                     NSString *blogDescription = [NSString stringWithString:[blog objectForKey:@"description"]];
-                    [[self delegate] setSearchResultsVCBlogTitle:self.blogtitle userName:self.usernameToLoad description:blogDescription];
+                    [[self completionDelegate] setSearchResultsVCBlogTitle:self.blogtitle userName:self.usernameToLoad description:blogDescription];
                 });
             }
         }else{
             NSLog(@"no response with response %@", response.description);
-            [[self delegate] searchReturnedNoResults];
+            [[self completionDelegate] searchReturnedNoResults];
         }
     }];
     [dataTask resume];
@@ -103,7 +107,7 @@
     NSURL *url = [NSURL URLWithString:link];
     NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
         self.downloadedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
-        [[self delegate] setAvatarImage];
+        [[self completionDelegate] setAvatarImage];
     }];
     [downloadTask resume];
 }
@@ -125,7 +129,7 @@
         [[KTPostStore sharedStore]setPosts:[_posts objectAtIndex:x] withSequence:x];
     }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-         [[self delegate] finishedDownloadingPosts];
+         [[self completionDelegate] finishedDownloadingPosts];
     });
 }
 

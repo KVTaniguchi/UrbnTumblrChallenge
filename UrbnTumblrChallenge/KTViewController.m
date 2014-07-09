@@ -38,7 +38,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (strong, nonatomic) IBOutlet UIView *searchResultsContainerView;
 @property (strong, nonatomic) KTSearchResultsVC *searchResultsVC;
-//@property (strong, nonatomic) KTPostCVC *postsCVC;
+@property (nonatomic) UIView *fakeTransitionView;
 @end
 
 @implementation KTViewController
@@ -46,8 +46,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _fakeTransitionView = [[UIView alloc]initWithFrame:CGRectMake(-320, 0, 320, 568)];
+    _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:134.0f/255.0f blue:232.0f/255.0f alpha:1.0];
+    [self.view addSubview:_fakeTransitionView];
     _dataLoader = [KTDataLoader new];
-    _dataLoader.delegate = self;
+    _dataLoader.completionDelegate = self;
     [_dataLoader makeSession];
     _userSearchTextField.delegate = self;
     [_postCVCContainerView setHidden:YES];
@@ -172,9 +175,18 @@
 -(void)finishedDownloadingPosts{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setTargetLabelValues];
-        
+        NSLog(@"finished download");
         postsCVC.fetchedPostsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:_userSearchTextField.text];
-        
+        [UIView animateWithDuration:1.0 animations:^{
+            _fakeTransitionView.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            if (finished) {
+                _fakeTransitionView.frame = CGRectMake(-320, 0, 320, 568);
+                _fakeTransitionView.alpha = 1.0f;
+                [self.view setNeedsDisplay];
+            }
+        }];
+
         [postsCVC.collectionView reloadData];
     });
 }
@@ -197,6 +209,7 @@
 }
 
 -(void)pushToCollectionView{
+    [_dataLoader preLoadPostsForUser:_dataLoader.usernameToLoad];
     if ([_userSearchTextField isFirstResponder]) {
         [_userSearchTextField resignFirstResponder];
     }
@@ -209,25 +222,17 @@
     } completion:^(BOOL finished) {
         if (finished) {
             _postCVCContainerView.alpha = 0.0f;
-            UIView *transitionSliderView = [[UIView alloc]initWithFrame:CGRectMake(-320, 0, 320, 568)];
-            transitionSliderView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:134.0f/255.0f blue:232.0f/255.0f alpha:1.0];
-            [self.view addSubview:transitionSliderView];
             [UIView animateWithDuration:2.0f animations:^{
-
                 [postsCVC.collectionView reloadData];
                 [self unhideCollectionView];
-                transitionSliderView.frame = CGRectMake(0, 0, 320, 568);
+                _fakeTransitionView.frame = CGRectMake(0, 0, 320, 568);
             } completion:^(BOOL finished) {
                 if (finished) {
                     [UIView animateWithDuration:3.0 animations:^{
                         _postCVCContainerView.alpha = 1.0f;
-                        transitionSliderView.alpha = 0.0f;
                     } completion:^(BOOL finished) {
                         if (finished) {
-                            [transitionSliderView removeFromSuperview];
-                            [UIView animateWithDuration:.1 animations:^{
-                                [self showTargetLabels];
-                            }];
+                            [self showTargetLabels];
                         }
                     }];
                 }
@@ -236,23 +241,16 @@
     }];
 }
 
-
 -(void)rebloggerLoad:(NSString *)rebloggerName{
     _userSearchTextField.text = rebloggerName;
-    UIView *fakeTransition = [[UIView alloc]initWithFrame:CGRectMake(320, 0, 320, 568)];
-    fakeTransition.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:229.0f/255.0f blue:74.0f/255.0f alpha:1.0];
-    [self.view addSubview:fakeTransition];
+    _fakeTransitionView = [[UIView alloc]initWithFrame:CGRectMake(320, 0, 320, 568)];
+    _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:229.0f/255.0f blue:74.0f/255.0f alpha:1.0];
+    [self.view addSubview:_fakeTransitionView];
     [_dataLoader grabBlogInfoForUser:rebloggerName];
     [[KTPostStore sharedStore]clearAllPosts];
-    //
-    // kick off frontloader -> frontloader
-    // track download progress
-    // add a progress indicator to the view
-    // [fakeTransition addSubView:progressView];
     [_dataLoader getPostsForUser:rebloggerName];
-    //
     [UIView animateWithDuration:1.0 animations:^{
-        fakeTransition.frame = CGRectMake(0, 0, 320, 568);
+        _fakeTransitionView.frame = CGRectMake(0, 0, 320, 568);
     } completion:^(BOOL finished) {
         [_postCVCContainerView setAlpha:0.0];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -261,17 +259,21 @@
                 // if the download progress is complete then fade the cover view
                 
                 [UIView animateWithDuration:1.0 animations:^{
-                    fakeTransition.alpha = 0.0f;
+                    _fakeTransitionView.alpha = 0.0f;
                     _postCVCContainerView.alpha = 1.0f;
                 } completion:^(BOOL finished) {
                     if (finished) {
-                        [fakeTransition removeFromSuperview];
+                        [_fakeTransitionView removeFromSuperview];
                     }
                 }];
             }
         });
         
     }];
+}
+
+-(void)animateCollectionViewAppearance{
+    
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{

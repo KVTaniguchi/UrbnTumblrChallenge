@@ -118,7 +118,6 @@
     NSMutableArray *orderedPosts = [NSMutableArray arrayWithArray:fetchedPosts];
     NSSortDescriptor *sequenceSorter = [NSSortDescriptor sortDescriptorWithKey:@"sequence" ascending:YES];
     [orderedPosts sortUsingDescriptors:@[sequenceSorter]];
-    NSLog(@"ordered posts: %@",orderedPosts.debugDescription);
     return orderedPosts;
 }
 

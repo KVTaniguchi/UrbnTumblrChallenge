@@ -22,7 +22,7 @@
     [super viewDidLoad];
     _dataLoader = [KTDataLoader new];
     [_dataLoader makeSession];
-    _dataLoader.delegate = self;
+    _dataLoader.completionDelegate = self;
 }
 
 - (void)didReceiveMemoryWarning
