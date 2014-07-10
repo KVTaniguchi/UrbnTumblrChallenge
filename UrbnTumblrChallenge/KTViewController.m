@@ -5,21 +5,15 @@
 //  Created by Kevin Taniguchi on 6/30/14.
 //  Copyright (c) 2014 Taniguchi. All rights reserved.
 //
-
 //DONE  Enter a username or tumblr url to load a user's feed
 //DONE  Display feed items for all posts
 //DONE INFINITE SCROLLING: Feed should be infinitely scrollable collection view supporting a way to refresh DONE
 //DONE If the post originated from another user, I should be able to tap another users avatar/user to transition to that users feed using a custom navigation transition
 //DONE Full HTML rendering of posts (without web view)
-// DONE Client side persistence for using core data ??? save what in core data?
-
+//DONE Client side persistence for using core data ??? save what in core data?
 // *** save the currently loaded tumblr feed, clear it with each new search
-
-
 //TODO :App should properly update when coming in and out of active states ???  update what in core data?
-
 // *** hit the dataloader when proper notification is given
-
 //App should be resilient to loss of network connectivity where possible
 //Unit tests are encouraged
 
