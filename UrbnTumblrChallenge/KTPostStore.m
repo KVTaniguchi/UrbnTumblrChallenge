@@ -52,14 +52,14 @@
     return allPosts;
 }
 
--(NSArray*)setPosts:(id)post withSequence:(NSInteger)sequence{
+-(void)setPosts:(id)post withSequence:(NSInteger)sequence{
     // if the store already has a post with this posts ID then return all posts without adding
     
     NSString *postID = [NSString stringWithFormat:@"%@",[post objectForKey:@"id"]];
     
-    if ([[KTPostStore sharedStore]storehHasPostWithPostID:postID] == NO) {
+    if ([[KTPostStore sharedStore]storehHasPostWithPostID:postID] == YES) {
         NSLog(@"hitting the id checker");
-        return allPosts;
+        return;
     }
     // else continue on below
     [allPosts addObject:post];
@@ -96,7 +96,7 @@
         p.userName = userName;
     }
     p.sequence = [NSNumber numberWithInteger:sequence];
-    return allPosts;
+    NSLog(@"&&&");
 }
 
 -(Post*)addNewPost{

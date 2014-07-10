@@ -87,8 +87,6 @@
     return postCell;
 }
 
-
-
 -(void)loadReblogger:(NSString *)rebloggerName{
     [[self reblogDelegate] rebloggerLoad:rebloggerName];
 }

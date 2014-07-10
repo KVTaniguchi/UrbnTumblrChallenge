@@ -47,8 +47,7 @@
 
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
     // do stuff with the url
-    
-    NSLog(@"did finish");
+    NSLog(@"did finish download");
 }
 
 -(void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session{
@@ -130,6 +129,7 @@
     for (NSInteger x = 0; x < _posts.count; x++) {
         [[KTPostStore sharedStore]setPosts:[_posts objectAtIndex:x] withSequence:x];
     }
+    [[KTPostStore sharedStore]saveChanges];
     [[self completionDelegate] finishedDownloadingPosts];
 }
 

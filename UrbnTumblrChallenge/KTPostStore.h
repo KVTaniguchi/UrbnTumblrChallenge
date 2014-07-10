@@ -18,7 +18,7 @@
 +(KTPostStore*)sharedStore;
 -(NSString*)itemArchivePath;
 -(NSArray*)allPosts;
--(NSArray*)setPosts:(id)post withSequence:(NSInteger)sequence;
+-(void)setPosts:(id)post withSequence:(NSInteger)sequence;
 -(Post*)addNewPost;
 -(void)clearAllPosts;
 -(BOOL)saveChanges;

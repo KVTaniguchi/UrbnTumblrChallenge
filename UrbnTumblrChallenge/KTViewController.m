@@ -168,24 +168,24 @@
 }
 
 -(void)finishedDownloadingPosts{
-    [self setTargetLabelValues];
     NSLog(@"finished download -> loading posts for: %@", _userSearchTextField.text);
-    postsCVC.fetchedPostsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:_dataLoader.usernameToLoad];
-    [UIView animateWithDuration:1.0 animations:^{
-        _fakeTransitionView.alpha = 0.0f;
-    }completion:^(BOOL finished) {
-        if (finished) {
-            [self resetTransitionView];
-            [self.view setNeedsDisplay];
-        }
-    }];
-    if (postsCVC.fetchedPostsForUser.count > 0) {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:1.0f animations:^{
+            _fakeTransitionView.alpha = 0.0f;
+        }completion:^(BOOL finished) {
+            if (finished) {
+                [self resetTransitionView];
+            }
+        }];
+        [self setTargetLabelValues];
+        postsCVC.fetchedPostsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:_userSearchTextField.text];
         NSLog(@"there are %lu posts", (unsigned long)postsCVC.fetchedPostsForUser.count);
-        dispatch_async(dispatch_get_main_queue(), ^{
+        if (postsCVC.fetchedPostsForUser.count > 0) {
             NSLog(@"hitting reload");
             [postsCVC.collectionView reloadData];
-        });
-    }
+            [self resetTransitionView];
+        }
+    });
 }
 
 -(void)setTargetLabelValues{
@@ -206,11 +206,12 @@
 }
 
 -(void)pushToCollectionView{
-    [_dataLoader preLoadPostsForUser:_dataLoader.usernameToLoad];
+    [_searchResultsContainerView setHidden:YES];
+//    [_dataLoader preLoadPostsForUser:_];
     if ([_userSearchTextField isFirstResponder]) {
         [_userSearchTextField resignFirstResponder];
     }
-    [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
+    [_dataLoader getPostsForUser:_userSearchTextField.text];
     [self simulateTransition];
 }
 
@@ -218,32 +219,48 @@
     _userSearchTextField.text = rebloggerName;
     _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:229.0f/255.0f blue:74.0f/255.0f alpha:1.0];
     [_dataLoader grabBlogInfoForUser:rebloggerName];
-    [[KTPostStore sharedStore]clearAllPosts];
+//    [[KTPostStore sharedStore]clearAllPosts];
     [self pushToCollectionView];
 }
 
+
+// target for refactorig since this is a mess
+//-(void)simulateTransition{
+//    [UIView animateWithDuration:1.0f animations:^{
+//        [_searchResultsContainerView setAlpha:0.0f];
+//        [_searchResultsContainerView setHidden:YES];
+//    } completion:^(BOOL finished) {
+//        if (finished) {
+//            [UIView animateWithDuration:2.0f animations:^{
+//                [self unhideCollectionView];
+//                _fakeTransitionView.frame = CGRectMake(0, 0, 320, 568);
+//            } completion:^(BOOL finished) {
+//                if (finished) {
+//                    [UIView animateWithDuration:1.0 animations:^{
+//                        _postCVCContainerView.alpha = 1.0f;
+//                    } completion:^(BOOL finished) {
+//                        if (finished) {
+//                            [self showTargetLabels];
+//                        }
+//                    }];
+//                }
+//            }];
+//        }
+//    }];
+//}
+
 -(void)simulateTransition{
-    [UIView animateWithDuration:1.0f animations:^{
-        [_searchResultsContainerView setAlpha:0.0f];
-        [_searchResultsContainerView setHidden:YES];
-    } completion:^(BOOL finished) {
-        if (finished) {
-            [UIView animateWithDuration:2.0f animations:^{
-                [self unhideCollectionView];
-                _fakeTransitionView.frame = CGRectMake(0, 0, 320, 568);
-            } completion:^(BOOL finished) {
-                if (finished) {
-                    [UIView animateWithDuration:1.0 animations:^{
-                        _postCVCContainerView.alpha = 1.0f;
-                    } completion:^(BOOL finished) {
-                        if (finished) {
-                            [self showTargetLabels];
-                        }
-                    }];
-                }
-            }];
-        }
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.45f animations:^{
+            [_searchResultsContainerView setHidden:YES];
+            [self unhideCollectionView];
+            _fakeTransitionView.frame = CGRectMake(0, 0, 320, 568);
+        } completion:^(BOOL finished) {
+            if (finished) {
+                [self showTargetLabels];
+            }
+        }];
+    });
 }
 
 -(void)resetTransitionView{
