@@ -49,7 +49,6 @@
 {
     [super viewDidLoad];
     [self createTransitionView];
-    [self.view addSubview:_fakeTransitionView];
     _dataLoader = [KTDataLoader new];
     _dataLoader.completionDelegate = self;
     [_dataLoader makeSession];
@@ -65,12 +64,9 @@
 
 -(void)hitDataLoaderBlogSearch{
     [self hideTargetLabels];
-    [[KTPostStore sharedStore]clearAllPosts];
-    [postsCVC.collectionView reloadData];
     [_searchResultsContainerView setAlpha:1.0f];
      [_searchResultsContainerView setHidden:NO];
     [_dataLoader grabBlogInfoForUser:_userSearchTextField.text];
-    [_postCVCContainerView setAlpha:0.0];
 }
 
 -(void)searchReturnedNoResults{
@@ -155,7 +151,7 @@
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     postsCVC = [[self storyboard]instantiateViewControllerWithIdentifier:@"KTPostCVC"];
     [postsCVC.collectionView setCollectionViewLayout:flowLayout];
-    [postsCVC setDelegate:self];
+    [postsCVC setReblogDelegate:self];
     [postsCVC.collectionView setDelegate:self];
     [postsCVC.collectionView setPagingEnabled:NO];
     [postsCVC.collectionView setUserInteractionEnabled:YES];
@@ -172,22 +168,24 @@
 }
 
 -(void)finishedDownloadingPosts{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self setTargetLabelValues];
-        NSLog(@"finished download: loading posts for %@", _userSearchTextField.text);
-        postsCVC.fetchedPostsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:_userSearchTextField.text];
-        [UIView animateWithDuration:1.0 animations:^{
-            _fakeTransitionView.alpha = 0.0f;
-        }completion:^(BOOL finished) {
-            if (finished) {
-                [self resetTransitionView];
-                [self.view setNeedsDisplay];
-            }
-        }];
-        if (postsCVC.fetchedPostsForUser.count > 0) {
-            [postsCVC.collectionView reloadData];
+    [self setTargetLabelValues];
+    NSLog(@"finished download -> loading posts for: %@", _userSearchTextField.text);
+    postsCVC.fetchedPostsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:_dataLoader.usernameToLoad];
+    [UIView animateWithDuration:1.0 animations:^{
+        _fakeTransitionView.alpha = 0.0f;
+    }completion:^(BOOL finished) {
+        if (finished) {
+            [self resetTransitionView];
+            [self.view setNeedsDisplay];
         }
-    });
+    }];
+    if (postsCVC.fetchedPostsForUser.count > 0) {
+        NSLog(@"there are %lu posts", (unsigned long)postsCVC.fetchedPostsForUser.count);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"hitting reload");
+            [postsCVC.collectionView reloadData];
+        });
+    }
 }
 
 -(void)setTargetLabelValues{
@@ -208,12 +206,11 @@
 }
 
 -(void)pushToCollectionView{
-//    [_dataLoader preLoadPostsForUser:_dataLoader.usernameToLoad];
+    [_dataLoader preLoadPostsForUser:_dataLoader.usernameToLoad];
     if ([_userSearchTextField isFirstResponder]) {
         [_userSearchTextField resignFirstResponder];
     }
-    [_dataLoader getPostsForUser:_userSearchTextField.text];
-    [_postCVCContainerView setAlpha:0.0];
+    [_dataLoader getPostsForUser:_dataLoader.usernameToLoad];
     [self simulateTransition];
 }
 
@@ -231,14 +228,12 @@
         [_searchResultsContainerView setHidden:YES];
     } completion:^(BOOL finished) {
         if (finished) {
-            _postCVCContainerView.alpha = 0.0f;
             [UIView animateWithDuration:2.0f animations:^{
-                [postsCVC.collectionView reloadData];
                 [self unhideCollectionView];
                 _fakeTransitionView.frame = CGRectMake(0, 0, 320, 568);
             } completion:^(BOOL finished) {
                 if (finished) {
-                    [UIView animateWithDuration:3.0 animations:^{
+                    [UIView animateWithDuration:1.0 animations:^{
                         _postCVCContainerView.alpha = 1.0f;
                     } completion:^(BOOL finished) {
                         if (finished) {
@@ -260,6 +255,7 @@
 -(void)createTransitionView{
     _fakeTransitionView = [[UIView alloc]initWithFrame:CGRectMake(-320, 0, 320, 568)];
     _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:134.0f/255.0f blue:232.0f/255.0f alpha:1.0];
+    [self.view addSubview:_fakeTransitionView];
     _progressView = [[MRActivityIndicatorView alloc]initWithFrame:CGRectMake(110, 160, 100, 100)];
     [_progressView setTintColor:[UIColor whiteColor]];
     [_progressView startAnimating];
@@ -293,8 +289,13 @@
 
 -(void)refreshCurrentFeed{
     if (_userSearchTextField.text.length > 0) {
+        NSLog(@"refreshing feed");
         [self pushToCollectionView];
     }
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [self resetTransitionView];
 }
 
 @end

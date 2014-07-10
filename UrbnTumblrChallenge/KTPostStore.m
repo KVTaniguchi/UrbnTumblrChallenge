@@ -57,7 +57,8 @@
     
     NSString *postID = [NSString stringWithFormat:@"%@",[post objectForKey:@"id"]];
     
-    if ([[KTPostStore sharedStore]storehHasPostWithPostID:postID] == YES) {
+    if ([[KTPostStore sharedStore]storehHasPostWithPostID:postID] == NO) {
+        NSLog(@"hitting the id checker");
         return allPosts;
     }
     // else continue on below

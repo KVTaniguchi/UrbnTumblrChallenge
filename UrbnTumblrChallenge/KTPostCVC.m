@@ -31,7 +31,7 @@
 }
 
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    // TO DO: redo all post loading from core data
+    NSLog(@"loading cell");
     KTPostCell *postCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"postCell" forIndexPath:indexPath];
     postCell.delegate = self;
     postCell.postImagesView.layer.shouldRasterize = YES;
@@ -90,11 +90,11 @@
 
 
 -(void)loadReblogger:(NSString *)rebloggerName{
-    [[self delegate] rebloggerLoad:rebloggerName];
+    [[self reblogDelegate] rebloggerLoad:rebloggerName];
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return [[[KTPostStore sharedStore]allPosts] count];
+    return self.fetchedPostsForUser.count;
 }
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
