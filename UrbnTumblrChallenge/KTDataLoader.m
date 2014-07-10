@@ -37,35 +37,6 @@
     self.downloadedImage = [UIImage new];
 }
 
-
--(void)preLoadPostsForUser:(NSString*)textFieldEntry{
-    NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/posts/?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG&reblog_info=true", textFieldEntry];
-    NSURL *url = [NSURL URLWithString:link];
-    _downloadTask = [self.session downloadTaskWithURL:url];
-    [_downloadTask resume];
-}
-
--(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
-    // do stuff with the url
-    NSLog(@"did finish download");
-}
-
--(void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session{
-    NSLog(@"did finish events");
-}
-
--(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes{
-    if (downloadTask == _downloadTask) {
-        NSLog(@"did resume offset");
-    }
-}
-
--(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
-    if (downloadTask == _downloadTask) {
-        NSLog(@"%f / %f", (double)totalBytesWritten,(double)totalBytesExpectedToWrite);
-    }
-}
-
 -(void)grabBlogInfoForUser:(NSString*)textFieldEntry{
     NSString *link = [NSString stringWithFormat:@"http://api.tumblr.com/v2/blog/%@.tumblr.com/info?api_key=oRjHa869ZJYZAhypDvVx20gDcy0RDF6KS07OXC8VdCZMPNR7sG", textFieldEntry];
     NSURL *url = [NSURL URLWithString:link];

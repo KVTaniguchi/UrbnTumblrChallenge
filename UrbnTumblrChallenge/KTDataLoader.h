@@ -19,13 +19,12 @@
 
 typedef void(^myCompletion)(BOOL);
 
-@interface KTDataLoader : NSObject <NSURLSessionDownloadDelegate, NSURLSessionTaskDelegate>
+@interface KTDataLoader : NSObject <NSURLSessionTaskDelegate>
 -(void)grabBlogInfoForUser:(NSString*)textFieldEntry;
 -(void)grabBlogAvatarForUser:(NSString*)userName;
 -(void)grabReblogAvatarForUser:(NSString*)userName :(myCompletion)compBlock;
 -(void)makeSession;
 -(void)getPostsForUser:(NSString*)userName;
--(void)preLoadPostsForUser:(NSString*)textFieldEntry;
 @property (nonatomic,weak) id<KTDataloaderDelegate>completionDelegate;
 @property (nonatomic, strong) UIImage *downloadedImage;
 @property (nonatomic,strong) NSString *usernameToLoad;

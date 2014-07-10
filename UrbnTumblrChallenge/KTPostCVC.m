@@ -60,7 +60,7 @@
     if (fetchedPost.rebloggerName != nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
                 [postCell.reblogLoadButton setHidden:NO];
-            [UIView animateWithDuration:1.5 animations:^{
+            [UIView animateWithDuration:0.5 animations:^{
                 [postCell.postImagesView setFrame:CGRectMake(0, 57, 165, 165)];
             } completion:^(BOOL finished) {
                 [postCell.rebloggedLabel setHidden:NO];

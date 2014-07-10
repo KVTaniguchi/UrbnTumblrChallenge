@@ -25,7 +25,6 @@
 -(id)init{
     self = [super init];
     if (self) {
-        allPosts = [NSMutableArray new];
         model = [NSManagedObjectModel mergedModelFromBundles:nil];
         NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc]initWithManagedObjectModel:model];
         NSString *path = [self itemArchivePath];
@@ -48,10 +47,6 @@
     return [documentDirectory stringByAppendingString:@"post.data"];
 }
 
--(NSArray*)allPosts{
-    return allPosts;
-}
-
 -(void)setPosts:(id)post withSequence:(NSInteger)sequence{
     // if the store already has a post with this posts ID then return all posts without adding
     
@@ -62,7 +57,6 @@
         return;
     }
     // else continue on below
-    [allPosts addObject:post];
     Post *p = [self addNewPost];
     
     p.postID = postID;
@@ -102,10 +96,6 @@
 -(Post*)addNewPost{
     Post *newPost = [NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:self.context];
     return newPost;
-}
-
--(void)clearAllPosts{
-    [allPosts removeAllObjects];
 }
 
 -(BOOL)saveChanges{

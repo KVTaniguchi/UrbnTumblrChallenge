@@ -12,15 +12,12 @@
 
 @interface KTPostStore : NSObject
 {
-    NSMutableArray *allPosts;
     NSManagedObjectModel *model;
 }
 +(KTPostStore*)sharedStore;
 -(NSString*)itemArchivePath;
--(NSArray*)allPosts;
 -(void)setPosts:(id)post withSequence:(NSInteger)sequence;
 -(Post*)addNewPost;
--(void)clearAllPosts;
 -(BOOL)saveChanges;
 -(NSArray*)fetchAllPostsForUser:(NSString*)user;
 -(void)deleteAllPostsForUser:(NSString*)user;

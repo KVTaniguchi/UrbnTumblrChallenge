@@ -168,7 +168,6 @@
 }
 
 -(void)finishedDownloadingPosts{
-    NSLog(@"finished download -> loading posts for: %@", _userSearchTextField.text);
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:1.0f animations:^{
             _fakeTransitionView.alpha = 0.0f;
@@ -179,9 +178,7 @@
         }];
         [self setTargetLabelValues];
         postsCVC.fetchedPostsForUser = [[KTPostStore sharedStore]fetchAllPostsForUser:_userSearchTextField.text];
-        NSLog(@"there are %lu posts", (unsigned long)postsCVC.fetchedPostsForUser.count);
         if (postsCVC.fetchedPostsForUser.count > 0) {
-            NSLog(@"hitting reload");
             [postsCVC.collectionView reloadData];
             [self resetTransitionView];
         }
@@ -207,7 +204,6 @@
 
 -(void)pushToCollectionView{
     [_searchResultsContainerView setHidden:YES];
-//    [_dataLoader preLoadPostsForUser:_];
     if ([_userSearchTextField isFirstResponder]) {
         [_userSearchTextField resignFirstResponder];
     }
@@ -219,35 +215,9 @@
     _userSearchTextField.text = rebloggerName;
     _fakeTransitionView.backgroundColor = [UIColor colorWithRed:74.0f/255.0f green:229.0f/255.0f blue:74.0f/255.0f alpha:1.0];
     [_dataLoader grabBlogInfoForUser:rebloggerName];
-//    [[KTPostStore sharedStore]clearAllPosts];
     [self pushToCollectionView];
 }
 
-
-// target for refactorig since this is a mess
-//-(void)simulateTransition{
-//    [UIView animateWithDuration:1.0f animations:^{
-//        [_searchResultsContainerView setAlpha:0.0f];
-//        [_searchResultsContainerView setHidden:YES];
-//    } completion:^(BOOL finished) {
-//        if (finished) {
-//            [UIView animateWithDuration:2.0f animations:^{
-//                [self unhideCollectionView];
-//                _fakeTransitionView.frame = CGRectMake(0, 0, 320, 568);
-//            } completion:^(BOOL finished) {
-//                if (finished) {
-//                    [UIView animateWithDuration:1.0 animations:^{
-//                        _postCVCContainerView.alpha = 1.0f;
-//                    } completion:^(BOOL finished) {
-//                        if (finished) {
-//                            [self showTargetLabels];
-//                        }
-//                    }];
-//                }
-//            }];
-//        }
-//    }];
-//}
 
 -(void)simulateTransition{
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -281,32 +251,20 @@
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     NSIndexPath *indexOfTopItem = [NSIndexPath indexPathForItem:0 inSection:0];
-//    NSInteger lastInt = [[[KTPostStore sharedStore]allPosts] count] - 1;
-//    NSIndexPath *indexOfBottomItem = [NSIndexPath indexPathForItem:lastInt inSection:0];
-//    NSLog(@"last int: %ld", (long)lastInt);
-
     __weak typeof (KTPostCVC) *weakCVC = postsCVC;
     [postsCVC.collectionView addBottomInfiniteScrollingWithActionHandler:^{
         [weakCVC.collectionView scrollToItemAtIndexPath:indexOfTopItem atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         [weakCVC.collectionView reloadData];
     }];
-    
-//    [postsCVC.collectionView addTopInfiniteScrollingWithActionHandler:^{
-//        NSLog(@"handle hitting top");
-//        [weakCVC.collectionView scrollToItemAtIndexPath:indexOfBottomItem atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
-//        [weakCVC.copy reloadData];
-//    }];
 }
 
 
 - (IBAction)refreshButtonPressed:(id)sender {
-    NSLog(@"user being refreshed is: %@", _userSearchTextField.text);
     [self pushToCollectionView];
 }
 
 -(void)refreshCurrentFeed{
     if (_userSearchTextField.text.length > 0) {
-        NSLog(@"refreshing feed");
         [self pushToCollectionView];
     }
 }
